@@ -6,6 +6,7 @@ module.exports = {
       fontFamily: {
         inter: ["Inter"],
         manrope: ["Manrope"],
+        gamja: ["Gamja Flower"],
       },
     },
   },
