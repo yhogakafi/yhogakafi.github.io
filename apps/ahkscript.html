@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: #f0f0f5;
+            background-color: #ecf0f3d0;
             color: #333;
             margin: 0;
             padding: 20px;
@@ -15,10 +15,29 @@
         .container {
             max-width: 800px;
             margin: 0 auto;
-            background: #fff;
+            background: #ecf0f3;
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 7px 7px 15px #babecc, -7px -7px 15px #fff;
+        }
+        .neumorphic-btn {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background-color: #ecf0f3;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 7px 7px 15px #babecc, -7px -7px 15px #fff;
+            cursor: pointer;
+            outline: none;
+            transition: all 0.3s ease;
+            margin-bottom: 10px;
+        }
+        .neumorphic-btn a {
+            font-weight: bold;
+            font-size: 1rem;
+            color: #575757;
+            text-decoration: none;
         }
         h2 {
             font-size: 1.5em;
@@ -132,6 +151,9 @@
 <body>
 
     <div class="container">
+            <button class="neumorphic-btn">
+                <a href="../index.html" class="h1">yhogakafi.github.io</a>
+            </button>
         <h2>Input Nomor Pengiriman</h2>
         <div class="input-section">
             <textarea id="inputBox" rows="10" placeholder="Input di sini..."></textarea>
