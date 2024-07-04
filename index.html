@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neumorphic Button</title>
+    <title>yhogakafi.github.io</title>
     <style>
         body {
             background-color: #ecf0f3;
@@ -25,7 +25,7 @@
         .neumorphic-btn {
             display: flex;
             align-items: center;
-            padding: 20px;
+            padding: 15px;
             background-color: #ecf0f3;
             border: none;
             border-radius: 50px;
@@ -33,19 +33,29 @@
             cursor: pointer;
             outline: none;
             transition: all 0.3s ease;
-            margin-bottom: 10px;
+            margin: 10px;
         }
 
         .neumorphic-btn a {
-            font-size: 1rem;
+            font-size: 0.9rem;
             color: #333;
             text-decoration: none;
         }
-        .circle {
+
+        .circle-red {
             width: 20px;
             height: 20px;
             margin-right: 10px;
             background-color: #ff3e3e;
+            box-shadow: 2px 2px 5px #babecc, -2px -2px 5px #fff;
+            border-radius: 50%;
+        }
+
+        .circle-green {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            background-color: #5dad3e;
             box-shadow: 2px 2px 5px #babecc, -2px -2px 5px #fff;
             border-radius: 50%;
         }
@@ -63,8 +73,12 @@
 <body>
     <div class="container">
         <div class="neumorphic-btn">
-            <div class="circle"></div>
+            <div class="circle-red"></div>
             <a href="apps/ahkscript.html">AHK Script Generator</a>
+        </div>
+        <div class="neumorphic-btn">
+            <div class="circle-green"></div>
+            <a href="apps/circle.html">neumorphic shapes</a>
         </div>
         <div class="footer">
             <h1>©️ 2024 yhogakafi</h1>
