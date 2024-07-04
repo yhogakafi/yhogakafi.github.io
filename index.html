@@ -23,10 +23,9 @@
         }
 
         .neumorphic-btn {
-            text-decoration: none;
-            padding: 20px 40px;
-            font-size: 1rem;
-            color: #333;
+            display: flex;
+            align-items: center;
+            padding: 20px 30px;
             background-color: #ecf0f3;
             border: none;
             border-radius: 12px;
@@ -34,7 +33,21 @@
             cursor: pointer;
             outline: none;
             transition: all 0.3s ease;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
+        }
+
+        .neumorphic-btn a {
+            font-size: 1rem;
+            color: #333;
+            text-decoration: none;
+        }
+        .circle {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            background-color: #ff3e3e;
+            box-shadow: 2px 2px 5px #babecc, -2px -2px 5px #fff;
+            border-radius: 50%;
         }
 
         .neumorphic-btn:active {
@@ -49,7 +62,10 @@
 </head>
 <body>
     <div class="container">
-        <a class="neumorphic-btn" href="apps/ahkscript.html">AHK Script Generator</a>
+        <div class="neumorphic-btn">
+            <div class="circle"></div>
+            <a href="apps/ahkscript.html">AHK Script Generator</a>
+        </div>
         <div class="footer">
             <h1>©️ 2024 yhogakafi</h1>
         </div>
