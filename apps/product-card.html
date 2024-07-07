@@ -68,17 +68,21 @@
             .product-name, .product-info {
                 font-size: 0.8em;
             }    
-            .product-card, .product-image img {
+            .product-card {
+                padding: 10px;
+                box-shadow: 3px 3px 10px #a3b1c6, -3px -3px 10px #ffffff;
+            }
+            .product-image img {
                 box-shadow: 3px 3px 10px #a3b1c6, -3px -3px 10px #ffffff;
             }
             body {
-                padding: 30px;
+                padding: 20px;
             }
             .product-grid {
-                gap: 30px;
+                gap: 20px;
             }
             .product-card {
-                flex: 1 1 calc(30% - 40px); /* For mobile browsers */
+                flex: 1 1 calc(50% - 40px); /* For mobile browsers */
             }
         }
     </style>
