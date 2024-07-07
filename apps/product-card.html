@@ -64,7 +64,16 @@
             font-weight: bold;
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 768px) { 
+            .product-name, .product-info {
+                font-size: 0.8em;
+            }    
+            body {
+                padding: 30px;
+            }
+            .product-grid {
+                gap: 30px;
+            }
             .product-card {
                 flex: 1 1 calc(30% - 40px); /* For mobile browsers */
             }
