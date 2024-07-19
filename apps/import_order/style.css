@@ -159,6 +159,11 @@ label {
     margin-right: 10px;
 }
 
+/* Style for the selected label */
+.radio-input:checked + .radio-label {
+    font-weight: bold;
+}
+
 .marketplace {
     margin-bottom: 10px;
 }
