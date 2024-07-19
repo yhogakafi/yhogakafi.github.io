@@ -194,7 +194,7 @@ label {
     padding: 10px 20px;
     margin: 10px 0 5px;
     border: none;
-    border-radius: 10px;
+    border-radius: 50px;
     background: #ff3e3e;
     box-shadow: 3px 3px 6px #a3b1c6,
                 -3px -3px 6px #ffffff;
@@ -209,7 +209,7 @@ label {
     padding: 10px 20px;
     margin: 10px 0 5px;
     border: none;
-    border-radius: 10px;
+    border-radius: 50px;
     background: #0051ff;
     box-shadow: 3px 3px 6px #a3b1c6,
                 -3px -3px 6px #ffffff;
@@ -224,7 +224,7 @@ label {
     padding: 10px 20px;
     margin: 10px 0 5px;
     border: none;
-    border-radius: 10px;
+    border-radius: 50px;
     background: #ff7b00;
     box-shadow: 3px 3px 6px #a3b1c6,
                 -3px -3px 6px #ffffff;
