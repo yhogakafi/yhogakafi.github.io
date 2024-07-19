@@ -113,7 +113,7 @@ h3 {
 }
 
 h4 {
-    margin: 10px 0 25px;
+    margin: 10px 0 20px;
     font-size: 0.8em;
 }
 
@@ -192,7 +192,7 @@ label {
 
 .button1 {
     padding: 10px 20px;
-    margin: 20px;
+    margin: 10px 0 5px;
     border: none;
     border-radius: 10px;
     background: #ff3e3e;
@@ -207,7 +207,7 @@ label {
 
 .button2 {
     padding: 10px 20px;
-    margin: 20px;
+    margin: 10px 0 5px;
     border: none;
     border-radius: 10px;
     background: #0051ff;
@@ -222,7 +222,7 @@ label {
 
 .button3 {
     padding: 10px 20px;
-    margin: 20px;
+    margin: 10px 0 5px;
     border: none;
     border-radius: 10px;
     background: #ff7b00;
