@@ -54,24 +54,12 @@ body {
     z-index: 1;
 }
 
-.container0 {
-    position: relative;
-    margin: 25px;
-    background: #e0e5ec;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 7px 7px 15px #a3b1c6,
-                -7px -7px 15px #ffffff;
-    width: 300px;
-    text-align: center;
-}
-
 .container1 {
     position: relative;
     margin: 25px;
     background: #e0e5ec;
     padding: 20px;
-    border-radius: 15px;
+    border-radius: 20px;
     box-shadow: 7px 7px 15px #a3b1c6,
                 -7px -7px 15px #ffffff;
     width: 300px;
@@ -80,14 +68,33 @@ body {
 
 .container2 {
     position: relative;
-    margin: 25px;
+    margin: 25px 25px 0px 25px;
     background: #e0e5ec;
     padding: 20px;
-    border-radius: 15px;
+    border-radius: 20px;
     box-shadow: 7px 7px 15px #a3b1c6,
                 -7px -7px 15px #ffffff;
     width: 300px;
     text-align: center;
+}
+
+.container3 {
+    position: relative;
+    margin: 25px;
+    background: #e0e5ec;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 7px 7px 15px #a3b1c6,
+                -7px -7px 15px #ffffff;
+    width: 300px;
+    text-align: center;
+}
+
+.mid-tool {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 }
 
 h1 {
@@ -103,6 +110,11 @@ h2 {
 h3 {
     font-size: 0.8em;
     font-style: oblique;
+}
+
+h4 {
+    margin: 10px 0 25px;
+    font-size: 0.8em;
 }
 
 .radio-group {

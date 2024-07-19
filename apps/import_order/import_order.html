@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container0">
+    <div class="container1">
         <div class="tools_no1">
             <h1>1</h1>
         </div>
@@ -18,49 +18,52 @@
             <button class="button1" onclick="extractData()">Extract Data</button>
         </div>
     </div>
-    <div class="container1">
-        <div class="tools_no2">
-            <h1>2</h1>
-        </div>
-        <h2>XLSX to XML Converter</h2>
-        <h3>"konversi file Excel berisi data pesanan ke XML untuk import ke Accurate"</h3>
-        <input type="file" id="fileInput" accept=".xlsx" class="file-input">
-        <div class="input-group">
-            <label for="sonoInput">No. Pesanan 5 digit (contoh : 00999)</label>
-            <input type="text" id="sonoInput" placeholder="Input di sini" class="text-input">
-        </div>
-        <div class="radio-group">
-            <label>Kode Marketplace</label>
-            <div class="marketplace">
-                <input type="radio" id="projectTMO1101" name="projectID" value="TMO-1101" class="radio-input">
-                <label for="projectTMO1101" class="radio-label">TMO-1101 (SHOPEE SCELTA)</label><br>
-                <input type="radio" id="projectTMO1009" name="projectID" value="TMO-1009" class="radio-input">
-                <label for="projectTMO1009" class="radio-label">TMO-1009 (SHOPEE GRAPE)</label>
+    <div class="mid-tool">
+        <div class="container2">
+            <div class="tools_no2">
+                <h1>2</h1>
+            </div>
+            <h2>XLSX to XML Converter</h2>
+            <h3>"konversi file Excel berisi data pesanan ke XML untuk import ke Accurate"</h3>
+            <input type="file" id="fileInput" accept=".xlsx" class="file-input">
+            <div class="input-group">
+                <label for="sonoInput">No. Pesanan 5 digit (contoh : 00999)</label>
+                <input type="text" id="sonoInput" placeholder="Input di sini" class="text-input">
+            </div>
+            <div class="radio-group">
+                <label>Kode Marketplace</label>
+                <div class="marketplace">
+                    <input type="radio" id="projectTMO1101" name="projectID" value="TMO-1101" class="radio-input">
+                    <label for="projectTMO1101" class="radio-label">TMO-1101 (SHOPEE SCELTA)</label><br>
+                    <input type="radio" id="projectTMO1009" name="projectID" value="TMO-1009" class="radio-input">
+                    <label for="projectTMO1009" class="radio-label">TMO-1009 (SHOPEE GRAPE)</label>
+                </div>
+            </div>
+            <div class="radio-group">
+                <label>Jasa Kirim</label>
+                <div class="jasa-kirim">
+                    <input type="radio" id="shipviaSPXStandard" name="shipviaID" value="SPX Standard" class="radio-input">
+                    <label for="shipviaSPXStandard" class="radio-label">SPX Standard</label><br>
+                    <input type="radio" id="shipviaSPXHemat" name="shipviaID" value="SPX Hemat" class="radio-input">
+                    <label for="shipviaSPXHemat" class="radio-label">SPX Hemat</label>    
+                </div>
+            </div>
+            <div class="radio-group">
+                <label>Penjual</label>
+                <div class="penjual">
+                    <input type="radio" id="FIRSTNAMEYHOGA" name="FIRSTNAME" value="YOGHA" class="radio-input"> <!-- value="" is case sensitive!!! -->
+                    <label for="FIRSTNAMEYHOGA" class="radio-label">Yhoga</label><br>
+                    <input type="radio" id="FIRSTNAMEMERRY" name="FIRSTNAME" value="Merry" class="radio-input"> <!-- value="" is case sensitive!!! -->
+                    <label for="FIRSTNAMEMERRY" class="radio-label">Merry</label>
+                </div>
+            </div>
+            <div class="button-group">
+                <button id="convertBtn" class="button2">Convert to XML</button>
             </div>
         </div>
-        <div class="radio-group">
-            <label>Jasa Kirim</label>
-            <div class="jasa-kirim">
-                <input type="radio" id="shipviaSPXStandard" name="shipviaID" value="SPX Standard" class="radio-input">
-                <label for="shipviaSPXStandard" class="radio-label">SPX Standard</label><br>
-                <input type="radio" id="shipviaSPXHemat" name="shipviaID" value="SPX Hemat" class="radio-input">
-                <label for="shipviaSPXHemat" class="radio-label">SPX Hemat</label>    
-            </div>
-        </div>
-        <div class="radio-group">
-            <label>Penjual</label>
-            <div class="penjual">
-                <input type="radio" id="FIRSTNAMEYHOGA" name="FIRSTNAME" value="YOGHA" class="radio-input"> <!-- value="" is case sensitive!!! -->
-                <label for="FIRSTNAMEYHOGA" class="radio-label">Yhoga</label><br>
-                <input type="radio" id="FIRSTNAMEMERRY" name="FIRSTNAME" value="Merry" class="radio-input"> <!-- value="" is case sensitive!!! -->
-                <label for="FIRSTNAMEMERRY" class="radio-label">Merry</label>
-            </div>
-        </div>
-        <div class="button-group">
-            <button id="convertBtn" class="button2">Convert to XML</button>
-        </div>
+        <h4>©️ 2024 yhogakafi</h4>
     </div>
-    <div class="container2">
+    <div class="container3">
         <div class="tools_no3">
             <h1>3</h1>
         </div>
