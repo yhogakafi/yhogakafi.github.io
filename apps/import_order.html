@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XLSX to XML Converter</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container0">
+        <div class="tools_no1">
+            <h1>1</h1>
+        </div>
+        <h2>Export Order Number</h2>
+        <div class="button-group">
+            <input type="file" id="pdf-file" class="file-input"/>
+            <button class="button" onclick="extractData()">Extract Data</button>
+        </div>
+    </div>
+    <div class="container1">
+        <div class="tools_no2">
+            <h1>2</h1>
+        </div>
+        <h2>XLSX to XML Converter</h2>
+        <input type="file" id="fileInput" accept=".xlsx" class="file-input">
+        <div class="input-group">
+            <label for="sonoInput">No. Pesanan 5 digit (contoh : 00999)</label>
+            <input type="text" id="sonoInput" placeholder="Input di sini" class="text-input">
+        </div>
+        <div class="radio-group">
+            <label>Kode Marketplace</label>
+            <input type="radio" id="projectTMO1101" name="projectID" value="TMO-1101" class="radio-input">
+            <label for="projectTMO1101" class="radio-label">TMO-1101 (SHOPEE SCELTA)</label><br>
+            <input type="radio" id="projectTMO1009" name="projectID" value="TMO-1009" class="radio-input">
+            <label for="projectTMO1009" class="radio-label">TMO-1009 (SHOPEE GRAPE)</label>
+        </div>
+        <div class="radio-group">
+            <label>Jasa Kirim</label>
+            <input type="radio" id="shipviaSPXStandard" name="shipviaID" value="SPX Standard" class="radio-input">
+            <label for="shipviaSPXStandard" class="radio-label">SPX Standard</label><br>
+            <input type="radio" id="shipviaSPXHemat" name="shipviaID" value="SPX Hemat" class="radio-input">
+            <label for="shipviaSPXHemat" class="radio-label">SPX Hemat</label>
+        </div>
+        <div class="button-group">
+            <button id="convertBtn" class="button">Convert to XML</button>
+        </div>
+    </div>
+    <div class="container2">
+        <div class="tools_no3">
+            <h1>3</h1>
+        </div>
+        <h2>Buat Laporan File Excel</h2>
+        <div class="button-group">
+            <input type="file" id="xmlFileInput" accept=".xml" class="file-input">
+            <button id="generateReportButton" class="button">Generate Report</button>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.8.335/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+    <script src="xlsxConverter.js"></script>
+    <script src="generateReport.js" defer></script>
+    <script src="export_order_no.js" defer></script>
+</body>
+</html>
