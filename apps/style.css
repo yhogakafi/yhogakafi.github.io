@@ -143,7 +143,7 @@ label {
     margin-right: 10px;
 }
 
-.button {
+.button-bg {
     padding: 10px 20px;
     margin: 20px;
     border: none;
@@ -151,12 +151,64 @@ label {
     background: #e0e5ec;
     box-shadow: 3px 3px 6px #a3b1c6,
                 -3px -3px 6px #ffffff;
-    color: #333;
+    color: #ffffff;
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
-.button:hover {
-    box-shadow: inset 3px 3px 6px #a3b1c6,
-                inset -3px -3px 6px #ffffff;
+.button1 {
+    padding: 10px 20px;
+    margin: 20px;
+    border: none;
+    border-radius: 10px;
+    background: #ff3e3e;
+    box-shadow: 3px 3px 6px #a3b1c6,
+                -3px -3px 6px #ffffff;
+    color: #ffffff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1em;
+    font-weight: bold;
+}
+
+.button2 {
+    padding: 10px 20px;
+    margin: 20px;
+    border: none;
+    border-radius: 10px;
+    background: #0051ff;
+    box-shadow: 3px 3px 6px #a3b1c6,
+                -3px -3px 6px #ffffff;
+    color: #ffffff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1em;
+    font-weight: bold;
+}
+
+.button3 {
+    padding: 10px 20px;
+    margin: 20px;
+    border: none;
+    border-radius: 10px;
+    background: #ff7b00;
+    box-shadow: 3px 3px 6px #a3b1c6,
+                -3px -3px 6px #ffffff;
+    color: #ffffff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1em;
+    font-weight: bold;
+}
+
+.button1:hover {
+    background-color: #0051ff;
+}
+
+.button2:hover {
+    background-color: #f83838;
+}
+
+.button3:hover {
+    background-color: #f83838;
 }
