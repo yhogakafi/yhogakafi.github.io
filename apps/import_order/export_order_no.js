@@ -30,7 +30,7 @@ async function extractData() {
         }
 
         // Define the keyword to search for
-        const keyword = 'No. Pesanan: ';
+        const keyword = 'No.Pesanan: ';
         
         // Extract the data after the keyword
         const dataAfterKeyword = extractDataAfterKeyword(text, keyword);
@@ -47,9 +47,15 @@ async function extractData() {
 
         // Convert the workbook to a binary array
         const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+
+        // Extract the base name of the input file (without extension)
+        const fileNameWithoutExt = file.name.replace(/\.[^/.]+$/, "");
         
-        // Save the workbook as an Excel file
-        saveAsExcelFile(excelBuffer, 'extracted_data.xlsx');
+        // Construct the new file name
+        const newFileName = `${fileNameWithoutExt}_no_order.xlsx`;
+
+        // Save the workbook as an Excel file with the new name
+        saveAsExcelFile(excelBuffer, newFileName);
     } catch (error) {
         console.error('Error:', error);
     }
@@ -62,8 +68,8 @@ function extractDataAfterKeyword(text, keyword) {
         // Extract the matched string
         let extractedData = match[1];
         
-        // Remove everything after and including "Penerima:"
-        const penerimaIndex = extractedData.indexOf('Penerima:');
+        // Remove everything after and including "COD"
+        const penerimaIndex = extractedData.indexOf('COD'); //delete strings after this
         if (penerimaIndex !== -1) {
             extractedData = extractedData.substring(0, penerimaIndex);
         }

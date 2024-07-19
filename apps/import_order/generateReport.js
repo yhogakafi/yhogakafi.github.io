@@ -24,12 +24,28 @@ function extractDataFromXML(xmlData) {
     return extractedData;
 }
 
-// Function to convert JSON data to XLSX
+// Function to convert JSON data to XLSX with custom headers
 function generateXLSXFromData(data) {
     let workbook = XLSX.utils.book_new();
-    let worksheet = XLSX.utils.json_to_sheet(data);
+    
+    // Define custom headers and their corresponding fields in data
+    let headers = ['No.PO', 'Username', 'No.Pesanan', 'Tgl.Pesanan'];
+    let dataWithHeaders = data.map(item => ({
+        'No.PO': item.PONO,
+        'Username': item.SHIPTO1,
+        'No.Pesanan': item.SONO,
+        'Tgl.Pesanan': item.SODATE
+    }));
+
+    // Create a worksheet with custom headers
+    let worksheet = XLSX.utils.json_to_sheet(dataWithHeaders, { header: headers });
+    
+    // Append worksheet to workbook
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+    
+    // Convert workbook to binary array
     let xlsxFile = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    
     return xlsxFile;
 }
 
@@ -42,7 +58,10 @@ function generateReport() {
             let xmlData = e.target.result;
             let extractedData = extractDataFromXML(xmlData);
             let xlsxFile = generateXLSXFromData(extractedData);
-            downloadXLSXFile(xlsxFile);
+            // Extract the original file name without the extension
+            let fileName = xmlFile.name.replace(/\.[^/.]+$/, ""); // Remove file extension
+            let newFileName = fileName + "_report.xlsx"; // Append "_report"
+            downloadXLSXFile(xlsxFile, newFileName);
         };
         reader.readAsText(xmlFile);
     } else {
@@ -51,12 +70,12 @@ function generateReport() {
 }
 
 // Function to trigger download of the generated XLSX file
-function downloadXLSXFile(data) {
+function downloadXLSXFile(data, fileName) {
     let blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
     let url = URL.createObjectURL(blob);
     let a = document.createElement('a');
     a.href = url;
-    a.download = 'report.xlsx';
+    a.download = fileName;
     document.body.appendChild(a);
     a.click();
     setTimeout(() => {
