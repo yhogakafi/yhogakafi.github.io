@@ -112,7 +112,7 @@ h3 {
 label {
     font-size: 1em;
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 0px;
     color: #333;
     font-weight: bold;
 }
@@ -138,7 +138,6 @@ label {
 
 .radio-input {
     width: auto;
-    margin-right: 10px;
 }
 
 .radio-label {
@@ -148,16 +147,22 @@ label {
     margin-right: 10px;
 }
 
-.penjual {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.marketplace {
+    margin-bottom: 10px;
 }
 
 .jasa-kirim {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-bottom: 10px;
+}
+
+.penjual {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
 }
 
 .button-bg {
