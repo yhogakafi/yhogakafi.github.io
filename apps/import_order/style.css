@@ -101,7 +101,7 @@ h2 {
 }
 
 .radio-group {
-    margin: 10px;
+    margin: 0px;
 }
 
 label {
@@ -115,20 +115,20 @@ label {
 .file-input {
     margin: 10px;
     padding: 5px;
-    border: solid 1px rgb(132, 132, 132);
+    border: solid 2px rgb(255, 255, 255);
     border-radius: 10px;
 }
 
 .text-input {
     width: calc(100% - 20px);
     padding: 10px;
-    border: solid 2px rgb(93, 93, 93);
+    border: solid 2px rgb(255, 255, 255);
     border-radius: 10px;
-    margin-bottom: 10px;
     box-shadow: inset 3px 3px 6px #a3b1c6,
                 inset -3px -3px 6px #ffffff;
     background: #e0e5ec;
     color: #333;
+    margin-bottom: 20px;
 }
 
 .radio-input {
@@ -137,10 +137,16 @@ label {
 }
 
 .radio-label {
-    font-size: 0.8em;
+    font-size: 1em;
     font-weight: normal;
     display: inline-block;
     margin-right: 10px;
+}
+
+.penjual {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .button-bg {

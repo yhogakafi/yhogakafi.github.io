@@ -6,21 +6,35 @@ document.addEventListener('DOMContentLoaded', function() {
     convertBtn.addEventListener('click', function() {
         // Check if SONO input is empty
         if (!sonoInput.value) {
-            alert('Please enter a value for SONO.');
+            alert('Input NO. PESANAN terlebih dahulu.');
+            return;
+        }
+
+        // Check if SONO input is exactly 5 digits
+        const sonoValue = sonoInput.value;
+        if (!/^\d{5}$/.test(sonoValue)) {
+            alert('NO. PESANAN harus terdiri dari 5 digit.');
             return;
         }
 
         // Check if a PROJECTID is selected
         const selectedProjectID = document.querySelector('input[name="projectID"]:checked');
         if (!selectedProjectID) {
-            alert('Please select a PROJECTID.');
+            alert('Pilih KODE MARKETPLACE terlebih dahulu.');
             return;
         }
 
         // Check if a SHIPVIAID is selected
         const selectedShipviaID = document.querySelector('input[name="shipviaID"]:checked');
         if (!selectedShipviaID) {
-            alert('Please select a SHIPVIAID.');
+            alert('Pilih JASA KIRIM terlebih dahulu.');
+            return;
+        }
+        
+        // Check if a FIRSTNAME is selected
+        const selectedFIRSTNAME = document.querySelector('input[name="FIRSTNAME"]:checked');
+        if (!selectedFIRSTNAME) {
+            alert('Pilih PENJUAL terlebih dahulu.');
             return;
         }
 
@@ -81,6 +95,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Get the selected SHIPVIAID value
         const selectedShipviaID = document.querySelector('input[name="shipviaID"]:checked').value;
+
+        // Get the selected FIRSTNAME value
+        const selectedFIRSTNAME = document.querySelector('input[name="FIRSTNAME"]:checked').value;
 
         // Opening NMEXML tag with the random EximID
         xmlString += `<NMEXML EximID="${randomEximID}" BranchCode="ONLINE" ACCOUNTANTCOPYID="">\n`;
@@ -155,7 +172,7 @@ document.addEventListener('DOMContentLoaded', function() {
             xmlString += `      <PONO>${firstRow[58] || ''}</PONO>\n`;
             xmlString += `      <SALESMANID>\n`;
             xmlString += `        <LASTNAME>${firstRow[59] || ''}</LASTNAME>\n`;
-            xmlString += `        <FIRSTNAME>${firstRow[60] || ''}</FIRSTNAME>\n`;
+            xmlString += `        <FIRSTNAME>${selectedFIRSTNAME}</FIRSTNAME>\n`; // Use the selected FIRSTNAME value
             xmlString += `      </SALESMANID>\n`;
             xmlString += `      <CURRENCYNAME>IDR</CURRENCYNAME>\n`;
             xmlString += `    </SALESORDER>\n`;
