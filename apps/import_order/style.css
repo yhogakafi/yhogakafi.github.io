@@ -256,3 +256,9 @@ label {
 .button3:hover {
     background-color: #f83838;
 }
+
+@media (max-width: 768p) {
+    body {
+        flex-direction: column;
+    }
+}
