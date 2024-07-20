@@ -25,6 +25,37 @@ body {
     z-index: 1;
 }
 
+.circle1 {
+    width: 50px;
+    height: 50px;
+    background-color: #ff3e3e00;
+    box-shadow: 2px 2px 5px #babecc, -2px -2px 5px #fff;
+    border-radius: 50%;
+    position: absolute;
+    top: -25px; /* Half the height of tools_no */
+    left: calc(50% - 25px); /* Center horizontally relative to container0 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 1;
+}
+
+.rectangle {
+    width: 30px;
+    height: 5px;
+    background-color: #ff3e3e;
+    margin-bottom: 5px;
+}
+
+.flipped-triangle {
+    width: 0;
+    height: 0;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-top: 25px solid #ff3e3e; /* This is the color of the triangle */
+}
+
 .tools_no2 {
     width: 50px;
     height: 50px;
@@ -67,6 +98,18 @@ body {
     text-align: center;
 }
 
+.template {
+    position: relative;
+    margin: 25px;
+    background: #e0e5ec;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 7px 7px 15px #a3b1c6,
+                -7px -7px 15px #ffffff;
+    width: 300px;
+    text-align: center;
+}
+
 .container2 {
     position: relative;
     margin: 25px 25px 0px 25px;
@@ -89,6 +132,13 @@ body {
                 -7px -7px 15px #ffffff;
     width: 300px;
     text-align: center;
+}
+
+.first-tool {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 }
 
 .mid-tool {
