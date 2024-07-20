@@ -1,4 +1,7 @@
 async function extractData() {
+        // Show the spinner
+        document.getElementById('loadingSpinner').style.display = 'block';
+
     try {
         // Get the file from the input
         const fileInput = document.getElementById('pdf-file');
@@ -58,6 +61,9 @@ async function extractData() {
         saveAsExcelFile(excelBuffer, newFileName);
     } catch (error) {
         console.error('Error:', error);
+    } finally {
+        // Hide the spinner
+        document.getElementById('loadingSpinner').style.display = 'none';
     }
 }
 

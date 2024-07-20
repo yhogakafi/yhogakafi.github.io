@@ -1,12 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>XLSX to XML Converter</title>
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XLSX to XML Converter</title>
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
+    <!-- Loading Spinner -->
+    <div id="loadingSpinner" class="spinner" style="display: none;">
+        <div class="spinner-border"></div>
+        <p>Processing...</p>
+    </div>
     <div class="first-tool">
         <div class="container1">
             <div class="tools_no1">
@@ -15,7 +22,7 @@
             <h2>Export Order Number</h2>
             <h3>"ekspor nomor pesanan dari file pdf label pengiriman"</h3>
             <div class="button-group">
-                <input type="file" id="pdf-file" accept=".pdf" class="file-input"/>
+                <input type="file" id="pdf-file" accept=".pdf" class="file-input" />
                 <button class="button1" onclick="extractData()">Extract Data</button>
             </div>
         </div>
@@ -56,18 +63,21 @@
             <div class="radio-group">
                 <label>Jasa Kirim</label>
                 <div class="jasa-kirim">
-                    <input type="radio" id="shipviaSPXStandard" name="shipviaID" value="SPX Standard" class="radio-input">
+                    <input type="radio" id="shipviaSPXStandard" name="shipviaID" value="SPX Standard"
+                        class="radio-input">
                     <label for="shipviaSPXStandard" class="radio-label">SPX Standard</label><br>
                     <input type="radio" id="shipviaSPXHemat" name="shipviaID" value="SPX Hemat" class="radio-input">
-                    <label for="shipviaSPXHemat" class="radio-label">SPX Hemat</label>    
+                    <label for="shipviaSPXHemat" class="radio-label">SPX Hemat</label>
                 </div>
             </div>
             <div class="radio-group">
                 <label>Penjual</label>
                 <div class="penjual">
-                    <input type="radio" id="FIRSTNAMEYHOGA" name="FIRSTNAME" value="YOGHA" class="radio-input"> <!-- value="" is case sensitive!!! -->
+                    <input type="radio" id="FIRSTNAMEYHOGA" name="FIRSTNAME" value="YOGHA" class="radio-input">
+                    <!-- value="" is case sensitive!!! -->
                     <label for="FIRSTNAMEYHOGA" class="radio-label">Yhoga</label><br>
-                    <input type="radio" id="FIRSTNAMEMERRY" name="FIRSTNAME" value="Merry" class="radio-input"> <!-- value="" is case sensitive!!! -->
+                    <input type="radio" id="FIRSTNAMEMERRY" name="FIRSTNAME" value="Merry" class="radio-input">
+                    <!-- value="" is case sensitive!!! -->
                     <label for="FIRSTNAMEMERRY" class="radio-label">Merry</label>
                 </div>
             </div>
@@ -92,4 +102,5 @@
     <script src="generateReport.js" defer></script>
     <script src="export_order_no.js" defer></script>
 </body>
+
 </html>

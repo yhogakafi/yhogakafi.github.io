@@ -42,25 +42,33 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     function convertXlsxToXml(file) {
+        // Show the spinner
+        document.getElementById('loadingSpinner').style.display = 'block';
+
         const reader = new FileReader();
         reader.onload = function(e) {
-            const data = new Uint8Array(e.target.result);
-            const workbook = XLSX.read(data, { type: 'array' });
+            try {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+    
+                // Get the original file name without extension
+                const fileNameWithoutExtension = file.name.split('.').slice(0, -1).join('.');
+    
+                // Assuming the data starts from the second row (index 1)
+                const sheet = workbook.Sheets[workbook.SheetNames[0]];
+                const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1, range: 1 });
+    
+                // Convert jsonData to XML
+                const xmlData = jsonToXml(jsonData);
+    
+                // Download the XML as a file with the original file name
+                downloadXmlFile(xmlData, `${fileNameWithoutExtension}.xml`);
+            } finally {
+                // Hide the spinner
+                document.getElementById('loadingSpinner').style.display = 'none';
+            }
 
-            // Get the original file name without extension
-            const fileNameWithoutExtension = file.name.split('.').slice(0, -1).join('.');
-
-            // Assuming the data starts from the second row (index 1)
-            const sheet = workbook.Sheets[workbook.SheetNames[0]];
-            const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1, range: 1 });
-
-            // Convert jsonData to XML
-            const xmlData = jsonToXml(jsonData);
-
-            // Download the XML as a file with the original file name
-            downloadXmlFile(xmlData, `${fileNameWithoutExtension}.xml`);
         };
-
         reader.readAsArrayBuffer(file);
     }
 
