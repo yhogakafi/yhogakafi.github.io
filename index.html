@@ -97,5 +97,15 @@
     <div class="footer">
         <h1>©️ 2024 yhogakafi</h1>
     </div>
+
+    <script>
+        document.querySelectorAll('.neumorphic-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const link = this.querySelector('a').href;
+                window.location.href = link;
+            });
+        });
+    </script>
+    
 </body>
 </html>
