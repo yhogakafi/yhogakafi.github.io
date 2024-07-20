@@ -50,37 +50,6 @@ body {
     z-index: 1;
 }
 
-.circle1 {
-    width: 50px;
-    height: 50px;
-    background-color: #ff3e3e00;
-    box-shadow: 2px 2px 5px #babecc, -2px -2px 5px #fff;
-    border-radius: 50%;
-    position: absolute;
-    top: -25px; /* Half the height of tools_no */
-    left: calc(50% - 25px); /* Center horizontally relative to container0 */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    z-index: 1;
-}
-
-.rectangle {
-    width: 30px;
-    height: 5px;
-    background-color: #ff3e3e;
-    margin-bottom: 5px;
-}
-
-.flipped-triangle {
-    width: 0;
-    height: 0;
-    border-left: 15px solid transparent;
-    border-right: 15px solid transparent;
-    border-top: 25px solid #ff3e3e; /* This is the color of the triangle */
-}
-
 .tools_no2 {
     width: 50px;
     height: 50px;
@@ -275,8 +244,8 @@ label {
     transition: all 0.3s ease;
 }
 
-.button1 {
-    padding: 10px 20px;
+.button-red {
+    padding: 7px 12px;
     margin: 10px 0 5px;
     border: none;
     border-radius: 50px;
@@ -288,10 +257,31 @@ label {
     transition: all 0.3s ease;
     font-size: 1em;
     font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.button2 {
-    padding: 10px 20px;
+.circle-red {
+    width: 15px;
+    height: 15px;
+    margin-right: 10px;
+    background-color: #ffffff;
+    /* box-shadow: 2px 2px 5px #babecc, -2px -2px 5px #fff; */
+    border-radius: 50%;
+}
+
+.button-red button {
+    border: none;
+    background: none;
+    color: #ffffff;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.button-blue {
+    padding: 7px 12px;
     margin: 10px 0 5px;
     border: none;
     border-radius: 50px;
@@ -303,10 +293,31 @@ label {
     transition: all 0.3s ease;
     font-size: 1em;
     font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.button3 {
-    padding: 10px 20px;
+.circle-blue {
+    width: 15px;
+    height: 15px;
+    margin-right: 10px;
+    background-color: #ffffff;
+    /* box-shadow: 2px 2px 5px #babecc, -2px -2px 5px #fff; */
+    border-radius: 50%;
+}
+
+.button-blue button {
+    border: none;
+    background: none;
+    color: #ffffff;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.button-org {
+    padding: 7px 12px;
     margin: 10px 0 5px;
     border: none;
     border-radius: 50px;
@@ -318,18 +329,96 @@ label {
     transition: all 0.3s ease;
     font-size: 1em;
     font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.button1:hover {
+.circle-org {
+    width: 15px;
+    height: 15px;
+    margin-right: 10px;
+    background-color: #ffffff;
+    /* box-shadow: 2px 2px 5px #babecc, -2px -2px 5px #fff; */
+    border-radius: 50%;
+}
+
+.button-org button {
+    border: none;
+    background: none;
+    color: #ffffff;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.button-red:hover {
+    background-color: transparent;
+    box-shadow: 0 0 3px 1px #fdfeff, inset 0 0 3px 1px #fdfeff; /* Create a glowing border */
+}
+
+.button-red:hover .circle-red {
+    width: 15px;
+    height: 15px;
+    margin-right: 10px;
+    background-color: #ff3e3e;
+    /* box-shadow: 2px 2px 5px #babecc, -2px -2px 5px #fff; */
+    border-radius: 50%;
+}
+
+.button-red:hover button {
+    border: none;
+    background: none;
+    color: #333;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.button-blue:hover {
+    background-color: transparent;
+    box-shadow: 0 0 3px 1px #fdfeff, inset 0 0 3px 1px #fdfeff; /* Create a glowing border */
+}
+
+.button-blue:hover .circle-blue {
+    width: 15px;
+    height: 15px;
+    margin-right: 10px;
     background-color: #0051ff;
+    /* box-shadow: 2px 2px 5px #babecc, -2px -2px 5px #fff; */
+    border-radius: 50%;
 }
 
-.button2:hover {
-    background-color: #f83838;
+.button-blue:hover button {
+    border: none;
+    background: none;
+    color: #333;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
 }
 
-.button3:hover {
-    background-color: #f83838;
+.button-org:hover {
+    background-color: transparent;
+    box-shadow: 0 0 3px 1px #fdfeff, inset 0 0 3px 1px #fdfeff; /* Create a glowing border */
+}
+
+.button-org:hover .circle-org {
+    width: 15px;
+    height: 15px;
+    margin-right: 10px;
+    background-color: #ff7b00;
+    /* box-shadow: 2px 2px 5px #babecc, -2px -2px 5px #fff; */
+    border-radius: 50%;
+}
+
+.button-org:hover button {
+    border: none;
+    background: none;
+    color: #333;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
 }
 
 @media (max-width: 768p) {

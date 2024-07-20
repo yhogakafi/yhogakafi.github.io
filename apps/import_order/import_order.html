@@ -21,9 +21,10 @@
             </div>
             <h2>Export Order Number</h2>
             <h3>"ekspor nomor pesanan dari file pdf label pengiriman"</h3>
-            <div class="button-group">
-                <input type="file" id="pdf-file" accept=".pdf" class="file-input" />
-                <button class="button1" onclick="extractData()">Extract Data</button>
+            <input type="file" id="pdf-file" accept=".pdf" class="file-input" />
+            <div class="button-red">
+                <div class="circle-red"></div>
+                <button onclick="extractData()">Extract Data</button>
             </div>
         </div>
         <!-- <div class="template">
@@ -81,8 +82,9 @@
                     <label for="FIRSTNAMEMERRY" class="radio-label">Merry</label>
                 </div>
             </div>
-            <div class="button-group">
-                <button id="convertBtn" class="button2">Convert to XML</button>
+            <div class="button-blue">
+                <div class="circle-blue"></div>
+                <button id="convertBtn">Convert to XML</button>
             </div>
         </div>
         <h4>©️ 2024 yhogakafi</h4>
@@ -94,7 +96,10 @@
         <h2>Buat Laporan File Excel</h2>
         <h3>"buat laporan dari file XML"</h3>
         <input type="file" id="xmlFileInput" accept=".xml" class="file-input">
-        <button id="generateReportButton" class="button3">Generate Report</button>
+        <div class="button-org">
+            <div class="circle-org"></div>
+            <button id="generateReportButton">Generate Report</button>
+        </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.8.335/pdf.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js" defer></script>
