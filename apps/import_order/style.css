@@ -35,6 +35,21 @@ body {
 }
 /* Spinner Styles */
 
+
+.first-tool {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.mid-tool {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
 .tools_no1 {
     width: 50px;
     height: 50px;
@@ -92,7 +107,7 @@ body {
     text-align: center;
 }
 
-.template {
+/* .template {
     position: relative;
     margin: 25px;
     background: #e0e5ec;
@@ -102,7 +117,7 @@ body {
                 -7px -7px 15px #ffffff;
     width: 300px;
     text-align: center;
-}
+} */
 
 .container2 {
     position: relative;
@@ -126,20 +141,6 @@ body {
                 -7px -7px 15px #ffffff;
     width: 300px;
     text-align: center;
-}
-
-.first-tool {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-}
-
-.mid-tool {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
 }
 
 h1 {
@@ -421,8 +422,16 @@ label {
     cursor: pointer;
 }
 
-@media (max-width: 768p) {
+@media (max-width: 768px) {
     body {
         flex-direction: column;
+        height: auto;
+    }
+    .container1, .container2, .container3 {
+        width: 300px;
+        padding: 10px;
+    }
+    .file-input {
+        margin: 0;
     }
 }
