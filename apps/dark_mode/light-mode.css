@@ -1,0 +1,13 @@
+/* Light mode styles */
+body {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+header, footer {
+    background-color: #f0f0f0;
+}
+
+a {
+    color: #007bff;
+}

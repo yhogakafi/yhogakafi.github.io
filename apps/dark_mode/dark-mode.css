@@ -1,0 +1,13 @@
+/* Dark mode styles */
+body {
+    background-color: #121212;
+    color: #e0e0e0;
+}
+
+header, footer {
+    background-color: #1e1e1e;
+}
+
+a {
+    color: #bb86fc;
+}
