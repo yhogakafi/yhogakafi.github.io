@@ -58,7 +58,6 @@ body {
   width: 50px;
   height: 50px;
   background-color: #ff3e3e;
-  box-shadow: 7px 7px 15px #1a252f, -7px -7px 15px #34495e;
   border-radius: 50%;
   position: absolute;
   top: -25px; /* Half the height of tools_no */
@@ -73,7 +72,6 @@ body {
   width: 50px;
   height: 50px;
   background-color: #0051ff;
-  box-shadow: 7px 7px 15px #1a252f, -7px -7px 15px #34495e;
   border-radius: 50%;
   position: absolute;
   top: -25px; /* Half the height of tools_no */
@@ -88,7 +86,6 @@ body {
   width: 50px;
   height: 50px;
   background-color: #ff7b00;
-  box-shadow: 7px 7px 15px #1a252f, -7px -7px 15px #34495e;
   border-radius: 50%;
   position: absolute;
   top: -25px; /* Half the height of tools_no */
@@ -366,7 +363,7 @@ label {
 .button-red:hover button {
   border: none;
   background: none;
-  color: #333;
+  color: #ecf0f3;
   font-size: 1em;
   font-weight: bold;
   cursor: pointer;
@@ -389,7 +386,7 @@ label {
 .button-blue:hover button {
   border: none;
   background: none;
-  color: #333;
+  color: #ecf0f3;
   font-size: 1em;
   font-weight: bold;
   cursor: pointer;
@@ -412,7 +409,7 @@ label {
 .button-org:hover button {
   border: none;
   background: none;
-  color: #333;
+  color: #ecf0f3;
   font-size: 1em;
   font-weight: bold;
   cursor: pointer;
