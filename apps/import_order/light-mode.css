@@ -482,6 +482,10 @@ label {
   transform: translateX(-50%); /* Adjust right value as needed */
 }
 
+.footer a {
+  color: #333;
+}
+
 /* media breakpoint */
 
 @media (max-width: 768px) {
