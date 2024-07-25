@@ -82,7 +82,6 @@ body {
   
   .toggle {
     isolation: isolate;
-    position: relative;
     height: 20px;
     width: 40px;
     border-radius: 15px;

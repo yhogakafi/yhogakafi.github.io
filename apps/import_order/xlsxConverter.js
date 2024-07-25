@@ -74,6 +74,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function jsonToXml(jsonData) {
         let xmlString = '<?xml version="1.0" encoding="UTF-8"?>\n';
+            
+        // Function to escape special characters in SHIPTO data
+        function escapeXml(unsafe) {
+            return unsafe
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&apos;');
+        }
 
         // Generate a 3-digit random number for EximID
         const randomEximID = Math.floor(100 + Math.random() * 900);
@@ -168,11 +178,11 @@ document.addEventListener('DOMContentLoaded', function() {
             xmlString += `      <FOB>${firstRow[46] || ''}</FOB>\n`;
             xmlString += `      <ESTSHIPDATE>${formattedDate}</ESTSHIPDATE>\n`;
             xmlString += `      <DESCRIPTION>${firstRow[48] || ''}</DESCRIPTION>\n`;
-            xmlString += `      <SHIPTO1>${firstRow[49] || ''}</SHIPTO1>\n`;
-            xmlString += `      <SHIPTO2>${firstRow[50] || ''}</SHIPTO2>\n`;
-            xmlString += `      <SHIPTO3>${firstRow[51] || ''}</SHIPTO3>\n`;
-            xmlString += `      <SHIPTO4>${firstRow[52] || ''}</SHIPTO4>\n`;
-            xmlString += `      <SHIPTO5>${firstRow[53] || ''}</SHIPTO5>\n`;
+            xmlString += `      <SHIPTO1>${escapeXml(firstRow[49] || '')}</SHIPTO1>\n`;
+            xmlString += `      <SHIPTO2>${escapeXml(firstRow[50] || '')}</SHIPTO2>\n`;
+            xmlString += `      <SHIPTO3>${escapeXml(firstRow[51] || '')}</SHIPTO3>\n`;
+            xmlString += `      <SHIPTO4>${escapeXml(firstRow[52] || '')}</SHIPTO4>\n`;
+            xmlString += `      <SHIPTO5>${escapeXml(firstRow[53] || '')}</SHIPTO5>\n`;
             xmlString += `      <DP>0</DP>\n`;
             xmlString += `      <DPACCOUNTID>TMS-210202</DPACCOUNTID>\n`;
             xmlString += `      <DPUSED>${firstRow[56] || ''}</DPUSED>\n`;

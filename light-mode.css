@@ -75,14 +75,13 @@ h2 {
 .label {
     display: flex;
     align-items: center;
-    justify-content:center;
+    justify-content: center;
     cursor: pointer;
     color: #394a56;
   }
   
   .toggle {
     isolation: isolate;
-    position: relative;
     height: 20px;
     width: 40px;
     border-radius: 15px;
