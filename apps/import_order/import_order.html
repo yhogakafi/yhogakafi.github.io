@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>XLSX to XML Converter</title>
-    <link rel="stylesheet" href="style.css">
+    <link id="theme-stylesheet" rel="stylesheet" href="light-mode.css">
 </head>
 
 <body>
@@ -64,7 +64,8 @@
             <div class="radio-group">
                 <label>Jasa Kirim</label>
                 <div class="jasa-kirim">
-                    <input type="radio" id="shipviaSPXStandard" name="shipviaID" value="SPX Standard" class="radio-input">
+                    <input type="radio" id="shipviaSPXStandard" name="shipviaID" value="SPX Standard"
+                        class="radio-input">
                     <label for="shipviaSPXStandard" class="radio-label">SPX Standard</label><br>
                     <input type="radio" id="shipviaSPXHemat" name="shipviaID" value="SPX Hemat" class="radio-input">
                     <label for="shipviaSPXHemat" class="radio-label">SPX Hemat</label>
@@ -102,11 +103,19 @@
             <button>Generate Report</button>
         </div>
     </div>
+    <label class="theme">
+        <div class="toggle">
+          <input class="toggle-state" type="checkbox" id="dark-mode-toggle"/>
+          <div class="indicator"></div>
+        </div>
+        <div class="theme-text">dark mode</div>
+    </label>  
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.8.335/pdf.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js" defer></script>
     <script src="xlsxConverter.js" defer></script>
     <script src="generateReport.js" defer></script>
     <script src="export_order_no.js" defer></script>
+    <script src="theme.js" defer></script>
 </body>
 
 </html>
