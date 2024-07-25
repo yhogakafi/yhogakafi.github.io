@@ -209,6 +209,7 @@ label {
 /* Style for the selected label */
 .radio-input:checked + .radio-label {
   font-weight: bold;
+  color: yellow;
 }
 
 .marketplace {
@@ -470,6 +471,13 @@ label {
 
 .toggle-state:checked ~ .indicator {
   transform: translate3d(25%, 0, 0);
+}
+
+.footer {
+  position: fixed; /* Use fixed positioning */
+  bottom: 20px; /* Adjust top value as needed */
+  left: 50%;
+  transform: translateX(-50%); /* Adjust right value as needed */
 }
 
 /* media breakpoint */

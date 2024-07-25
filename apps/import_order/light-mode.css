@@ -182,14 +182,14 @@ label {
 .file-input {
   margin: 10px;
   padding: 5px;
-  border: solid 2px rgb(255, 255, 255);
+  border: solid 1px rgb(255, 255, 255);
   border-radius: 10px;
 }
 
 .text-input {
   width: calc(100% - 20px);
   padding: 10px;
-  border: solid 2px rgb(255, 255, 255);
+  border: solid 1px rgb(255, 255, 255);
   border-radius: 10px;
   box-shadow: inset 3px 3px 6px #a3b1c6, inset -3px -3px 6px #ffffff;
   background: #e0e5ec;
@@ -473,6 +473,13 @@ label {
 
 .toggle-state:checked ~ .indicator {
   transform: translate3d(25%, 0, 0);
+}
+
+.footer {
+  position: fixed; /* Use fixed positioning */
+  bottom: 20px; /* Adjust top value as needed */
+  left: 50%;
+  transform: translateX(-50%); /* Adjust right value as needed */
 }
 
 /* media breakpoint */
