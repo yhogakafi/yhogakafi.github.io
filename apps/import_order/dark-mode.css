@@ -194,6 +194,46 @@ label {
   margin-bottom: 20px;
 }
 
+.input-group {
+  position: relative;
+}
+
+.tooltip {
+  position: absolute;
+  top: 0%; /* Position the tooltip below the input box */
+  left: 100%; /* Align the tooltip to the center horizontally */
+  margin-left: 10px; /* Space between the input box and tooltip */
+  background-color: #c20808;
+  color: #ffffff;
+  border-radius: 10px;
+  display: none; /* Hide by default */
+  white-space: nowrap;
+  z-index: 10; /* Ensure the tooltip is above other content */
+  padding: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional shadow for better visibility */
+}
+
+/* Add the tooltip tail using a pseudo-element */
+.tooltip::after {
+  content: '';
+  position: absolute;
+  top: 50%; /* Center the tail vertically relative to the tooltip */
+  right: 100%; /* Position the tail at the left edge of the tooltip */
+  transform: translateY(-50%); /* Center the tail vertically */
+  border-width: 5px; /* Size of the tail */
+  border-style: solid;
+  border-color: transparent #c20808 transparent transparent; /* Tail color */
+}
+
+.tooltip h3 {
+  font-size: 1.2em;
+}
+
+/* Show the tooltip when the input box is focused */
+.input-group input:focus + .tooltip {
+  display: block;
+}
+
 .radio-input {
   width: auto;
 }
@@ -481,7 +521,7 @@ label {
 }
 
 .footer a {
-  color: #333;
+  color: #fbff00;
 }
 
 /* media breakpoint */
