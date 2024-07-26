@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Text Extractor</title>
+</head>
+<body>
+    <h1>PDF Text Extractor</h1>
+    <input type="file" id="pdf-input" accept=".pdf">
+    <button id="export-button">Export</button>
+    <div id="output"></div>
+
+    <!-- Include PDF.js library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.8.335/pdf.min.js" defer></script>
+    <script>
+        document.getElementById('export-button').addEventListener('click', async () => {
+            const fileInput = document.getElementById('pdf-input');
+            const outputDiv = document.getElementById('output');
+            if (fileInput.files.length === 0) {
+                outputDiv.textContent = 'Please select a PDF file first.';
+                return;
+            }
+
+            const file = fileInput.files[0];
+            const fileReader = new FileReader();
+
+            fileReader.onload = async function() {
+                const typedArray = new Uint8Array(this.result);
+                try {
+                    const loadingTask = pdfjsLib.getDocument({ data: typedArray });
+                    const pdf = await loadingTask.promise;
+
+                    let textContent = '';
+                    for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+                        const page = await pdf.getPage(pageNum);
+                        const textContentPage = await page.getTextContent();
+                        const pageText = textContentPage.items.map(item => item.str).join(' ');
+                        textContent += `Page ${pageNum}:\n${pageText}\n\n`;
+                    }
+
+                    outputDiv.textContent = textContent;
+                } catch (error) {
+                    outputDiv.textContent = `Error: ${error.message}`;
+                }
+            };
+
+            fileReader.readAsArrayBuffer(file);
+        });
+    </script>
+</body>
+</html>
