@@ -110,6 +110,16 @@ body {
   text-align: center;
 }
 
+.excel-tool {
+  margin: 25px;
+  background: #e0e5ec;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 7px 7px 15px #a3b1c6, -7px -7px 15px #ffffff;
+  width: 300px;
+  text-align: center;
+}
+
 /* .template {
     position: relative;
     margin: 25px;
@@ -152,6 +162,10 @@ h1 {
 h2 {
   margin-bottom: 0px;
   color: #333;
+}
+
+.excel-tool h2 {
+  margin-top: 0;
 }
 
 h3 {
@@ -218,7 +232,7 @@ label {
 
 /* Add the tooltip tail using a pseudo-element */
 .tooltip::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 50%; /* Center the tail vertically relative to the tooltip */
   right: 100%; /* Position the tail at the left edge of the tooltip */

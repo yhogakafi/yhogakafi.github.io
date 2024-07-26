@@ -27,6 +27,15 @@
                 <button>Extract Data</button>
             </div>
         </div>
+        <div class="excel-tool">
+            <h2>Excel Processor (Optional)</h2>
+            <h3>"dipakai untuk menghilangkan kolom tidak diperlukan dari file hasil ekspor pesanan shopee"</h3>
+            <input type="file" id="fileInput" class="file-input"/>
+            <div class="button-red" onclick="processFile()">
+                <div class="circle-red"></div>
+                <button>Process file</button>
+            </div>
+        </div>
         <!-- <div class="template">
             <div class="circle1">
                 <div class="rectangle"></div>
@@ -122,6 +131,7 @@
     <script src="generateReport.js" defer></script>
     <script src="export_order_no.js" defer></script>
     <script src="theme.js" defer></script>
+    <script src="excel-tool.js" defer></script>
 </body>
 
 </html>
