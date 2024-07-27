@@ -111,6 +111,17 @@ async function mergeFiles() {
         const dataFromFile3 = sheet3FromFile3.getSheetValues().slice(1); // Skip header row
         sheet2.addRows(dataFromFile3);
 
+        // Apply manual formatting to 'Nomor Referensi SKU' column
+        const skuColumnIndex = headersFile1.indexOf('Nomor Referensi SKU') + 1; // Get the 1-based index
+        sheet1.getColumn(skuColumnIndex).eachCell({ includeEmpty: true }, (cell) => {
+            if (cell.value && typeof cell.value === 'string') {
+                const value = cell.value.toLowerCase();
+                if (value.includes('grosir') || value.includes('10s') || value.includes('5s')) {
+                    cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFF0000' } }; // Red fill
+                }
+            }
+        });
+
         // Generate the output file name using file3's name
         const file3Name = file3Input.name;
         const outputFileName = file3Name.replace('_no_order', '');
