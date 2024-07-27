@@ -30,8 +30,13 @@
         <div class="excel-tool">
             <h2>Excel Processor (Optional)</h2>
             <h3>"dipakai untuk menghilangkan kolom tidak diperlukan dari file hasil ekspor pesanan shopee"</h3>
-            <input type="file" id="fileInput" class="file-input"/>
-            <div class="button-red" onclick="processFile()">
+            <label for="file1">template</label>
+            <input type="file" id="file1" accept=".xlsx" class="file-input"/>
+            <label for="file2">dokumen marketplace</label>
+            <input type="file" id="file2" accept=".xlsx" class="file-input"/>
+            <label for="file3">no pesanan dari pdf resi</label>
+            <input type="file" id="file3" accept=".xlsx" class="file-input"/>
+            <div class="button-red" onclick="mergeFiles()">
                 <div class="circle-red"></div>
                 <button>Process file</button>
             </div>
@@ -124,9 +129,9 @@
     <div class="footer">
         <h4>©️ 2024 <a href="https://yhogakafi.github.io">yhogakafi</a></h4>
     </div>
-    <script src="tooltip.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.8.335/pdf.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js" defer></script>
     <script src="xlsxConverter.js" defer></script>
     <script src="generateReport.js" defer></script>
     <script src="export_order_no.js" defer></script>

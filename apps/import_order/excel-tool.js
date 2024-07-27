@@ -1,124 +1,103 @@
-function processFile() {
-    const fileInput = document.getElementById('fileInput');
-    const file = fileInput.files[0];
-    if (!file) {
-        alert('Please select a file.');
+async function mergeFiles() {
+    const file1Input = document.getElementById('file1').files[0];
+    const file2Input = document.getElementById('file2').files[0];
+    const file3Input = document.getElementById('file3').files[0];
+
+    if (!file1Input || !file2Input || !file3Input) {
+        alert('Please select all three files.');
         return;
     }
 
-    const reader = new FileReader();
-    reader.onload = function(event) {
-        const data = new Uint8Array(event.target.result);
-        const workbook = XLSX.read(data, { type: 'array' });
-        const sheetName = workbook.SheetNames[0];
-        const sheet = workbook.Sheets[sheetName];
-        const jsonData = XLSX.utils.sheet_to_json(sheet);
-        const processedData = processExcelData(jsonData);
+    const file1Data = await fileToArrayBuffer(file1Input);
+    const file2Data = await fileToArrayBuffer(file2Input);
+    const file3Data = await fileToArrayBuffer(file3Input);
 
-        // Create new file name
-        const originalFileName = file.name;
-        const newFileName = originalFileName.replace(/\.xlsx?$/, '') + '_new.xlsx';
+    const workbook1 = new ExcelJS.Workbook();
+    const workbook2 = new ExcelJS.Workbook();
+    const workbook3 = new ExcelJS.Workbook();
 
-        saveToExcel(processedData, newFileName);
-    };
-    reader.readAsArrayBuffer(file);
-}
+    await workbook1.xlsx.load(file1Data);
+    await workbook2.xlsx.load(file2Data);
+    await workbook3.xlsx.load(file3Data);
 
-function processExcelData(data) {
-    const columnsToKeep = [
-        'No. Pesanan',
+    const sheet1 = workbook1.getWorksheet('daftar pesanan marketplace');
+    const sheet2 = workbook1.getWorksheet('no pesanan dari pdf mita');
+
+    const sheet2FromFile2 = workbook2.worksheets[0];
+    const sheet3FromFile3 = workbook3.worksheets[0];
+
+    // Define the new column order
+    const newColumnOrder = [
+        'Jumlah',
         'Nomor Referensi SKU',
         'Harga Awal',
         'Harga Setelah Diskon',
-        'Jumlah',
-        'Username (Pembeli)',
-        'Alamat Pengiriman'
-    ];
-    
-    const filteredData = data.map(row => {
-        const newRow = {};
-
-        columnsToKeep.forEach(col => {
-            if (row[col] !== undefined) {
-                newRow[col] = row[col];
-            }
-        });
-
-        // Remove periods from values and convert to float
-        const hargaAwal = parseFloat((row['Harga Awal'] || '').replace(/\./g, '')) || 0;
-        const hargaSetelahDiskon = parseFloat((row['Harga Setelah Diskon'] || '').replace(/\./g, '')) || 0;
-
-        // Add the new column with the calculated value
-        newRow['Selisih Harga'] = hargaAwal - hargaSetelahDiskon;
-
-        // Convert back to string for output, but ensure periods are removed
-        newRow['Harga Awal'] = hargaAwal.toFixed(0);
-        newRow['Harga Setelah Diskon'] = hargaSetelahDiskon.toFixed(0);
-
-        return newRow;
-    });
-
-    const columnOrder = [
-        'COUNTIF', // New column added here
-        'KODE PLU', // New column added here
-        'Jumlah',
-        'UNIT', // New column added here
-        'Nomor Referensi SKU',
-        'Harga Awal',
-        'Selisih Harga', // New column added here
         'Username (Pembeli)',
         'Alamat Pengiriman',
-        '', // Placeholder columns
-        '',
-        '',
-        'Harga Setelah Diskon' // Moved to the end
+        'No. Pesanan'
     ];
-    
-    return filteredData.map(row => {
-        const newRow = {};
-        columnOrder.forEach(col => {
-            newRow[col] = row[col] !== undefined ? row[col] : '';
-        });
-        return newRow;
+
+    // Get the header row from File2
+    const headerRow = sheet2FromFile2.getRow(1);
+    const headerValues = headerRow.values;
+
+    // Determine the indexes of the columns to copy
+    const columnIndexes = newColumnOrder.map(column => headerValues.indexOf(column)).filter(index => index > 0);
+
+    // Clear existing content in the "daftar pesanan marketplace" sheet
+    sheet1.eachRow({ includeEmpty: true }, (row) => {
+        row.values = [];
     });
-}
 
-function saveToExcel(data, filename) {
-    const ws = XLSX.utils.json_to_sheet(data);
+    // Copy headers
+    sheet1.addRow(newColumnOrder);
 
-    // Explicitly format numeric columns
-    const colKeys = ['Harga Awal', 'Harga Setelah Diskon', 'Selisih Harga'];
-    colKeys.forEach(key => {
-        if (ws[key]) {
-            ws[key].z = XLSX.SSF.get_table()['0']; // Apply number format
+    // Create a mapping from old index to new index
+    const oldToNewIndex = newColumnOrder.reduce((map, column, index) => {
+        map[headerValues.indexOf(column)] = index + 1; // ExcelJS columns are 1-based
+        return map;
+    }, {});
+
+    // Copy rows
+    sheet2FromFile2.eachRow({ includeEmpty: false }, (row, rowNumber) => {
+        if (rowNumber > 1) { // Skip header row
+            const rowValues = newColumnOrder.map((_, index) => {
+                const oldIndex = columnIndexes[index] - 1; // Adjust for 0-based index
+                return row.getCell(oldIndex + 1).value;
+            });
+            const newRow = sheet1.addRow(rowValues);
+
+            // Set text wrap to false for all columns in the new row
+            newColumnOrder.forEach((_, index) => {
+                const column = sheet1.getColumn(index + 1);
+                column.alignment = { wrapText: false };
+            });
         }
     });
 
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-    
-    const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
-    const blob = new Blob([s2ab(wbout)], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-    const url = URL.createObjectURL(blob);
-    
-    // Create a temporary link to trigger the download
+    // Copy the content of File3 to the 'no pesanan dari pdf mita' sheet
+    const dataFromFile3 = sheet3FromFile3.getSheetValues().slice(1); // Skip header row
+    sheet2.addRows(dataFromFile3);
+
+    // Generate the output file name
+    const file3Name = file3Input.name;
+    const outputFileName = file3Name.replace('_no_order', '');
+
+    // Save the updated File1
+    const updatedFile1 = new Blob([await workbook1.xlsx.writeBuffer()], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const url = URL.createObjectURL(updatedFile1);
     const a = document.createElement('a');
     a.href = url;
-    a.download = filename;
-    a.style.display = 'none';
-    document.body.appendChild(a);
+    a.download = outputFileName;
     a.click();
-    document.body.removeChild(a);
-    
-    // Clean up URL object
     URL.revokeObjectURL(url);
 }
 
-function s2ab(s) {
-    const buf = new ArrayBuffer(s.length);
-    const view = new Uint8Array(buf);
-    for (let i = 0; i < s.length; i++) {
-        view[i] = s.charCodeAt(i) & 0xFF;
-    }
-    return buf;
+function fileToArrayBuffer(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => resolve(e.target.result);
+        reader.onerror = reject;
+        reader.readAsArrayBuffer(file);
+    });
 }
