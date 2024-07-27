@@ -115,7 +115,7 @@ body {
   background: #e0e5ec;
   padding: 20px;
   border-radius: 20px;
-  box-shadow: 7px 7px 15px #a3b1c6, -7px -7px 15px #ffffff;
+  box-shadow: inset 5px 5px 7px #babecc, inset -7px -7px 10px #fff;
   width: 300px;
   text-align: center;
 }

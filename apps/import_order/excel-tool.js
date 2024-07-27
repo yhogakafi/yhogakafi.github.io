@@ -26,49 +26,77 @@ async function mergeFiles() {
     const sheet2FromFile2 = workbook2.worksheets[0];
     const sheet3FromFile3 = workbook3.worksheets[0];
 
-    // Define the new column order
-    const newColumnOrder = [
+    // Define the header columns in File1
+    const headersFile1 = [
+        'KODE PLU',
         'Jumlah',
+        'UNIT',
         'Nomor Referensi SKU',
         'Harga Awal',
-        'Harga Setelah Diskon',
+        'DISKON',
         'Username (Pembeli)',
         'Alamat Pengiriman',
-        'No. Pesanan'
+        'No. Pesanan',
+        'Countif dgn pdf mita',
+        'Harga Setelah Diskon',
     ];
 
     // Get the header row from File2
-    const headerRow = sheet2FromFile2.getRow(1);
-    const headerValues = headerRow.values;
+    const headerRowFile2 = sheet2FromFile2.getRow(1);
+    const headerValuesFile2 = headerRowFile2.values;
 
-    // Determine the indexes of the columns to copy
-    const columnIndexes = newColumnOrder.map(column => headerValues.indexOf(column)).filter(index => index > 0);
+    // Create a map of File2 column headers to their indexes
+    const columnMapFile2 = {};
+    headerValuesFile2.forEach((header, index) => {
+        if (header && headersFile1.includes(header)) {
+            columnMapFile2[header] = index;
+        }
+    });
 
     // Clear existing content in the "daftar pesanan marketplace" sheet
-    sheet1.eachRow({ includeEmpty: true }, (row) => {
-        row.values = [];
+    // Clear rows below the first row
+    sheet1.eachRow({ includeEmpty: true }, (row, rowNumber) => {
+        if (rowNumber > 1) { // Skip header row
+            row.values = [];
+        }
     });
 
     // Copy headers
-    sheet1.addRow(newColumnOrder);
+    sheet1.getRow(1).values = headersFile1;
 
-    // Create a mapping from old index to new index
-    const oldToNewIndex = newColumnOrder.reduce((map, column, index) => {
-        map[headerValues.indexOf(column)] = index + 1; // ExcelJS columns are 1-based
-        return map;
-    }, {});
-
-    // Copy rows
+    // Copy rows and calculate DISKON
     sheet2FromFile2.eachRow({ includeEmpty: false }, (row, rowNumber) => {
         if (rowNumber > 1) { // Skip header row
-            const rowValues = newColumnOrder.map((_, index) => {
-                const oldIndex = columnIndexes[index] - 1; // Adjust for 0-based index
-                return row.getCell(oldIndex + 1).value;
+            // Get values for the required columns
+            const hargaAwalString = row.getCell(columnMapFile2['Harga Awal']).value;
+            const hargaSetelahDiskonString = row.getCell(columnMapFile2['Harga Setelah Diskon']).value;
+
+            // Clean and convert to integers
+            const hargaAwal = cleanNumericString(hargaAwalString);
+            const hargaSetelahDiskon = cleanNumericString(hargaSetelahDiskonString);
+
+            // Calculate DISKON
+            const diskon = hargaAwal - hargaSetelahDiskon;
+
+            // Map row values
+            const rowValues = headersFile1.map((header) => {
+                if (header === 'DISKON') {
+                    return diskon;
+                } else if (header === 'Harga Awal') {
+                    return hargaAwal;
+                } else if (header === 'Harga Setelah Diskon') {
+                    return hargaSetelahDiskon;
+                } else if (header === 'Jumlah') {
+                    return cleanNumericString(row.getCell(columnMapFile2['Jumlah']).value); // Ensure 'Jumlah' is integer
+                } else {
+                    const columnIndex = columnMapFile2[header];
+                    return columnIndex !== undefined ? row.getCell(columnIndex).value : null;
+                }
             });
             const newRow = sheet1.addRow(rowValues);
 
             // Set text wrap to false for all columns in the new row
-            newColumnOrder.forEach((_, index) => {
+            headersFile1.forEach((_, index) => {
                 const column = sheet1.getColumn(index + 1);
                 column.alignment = { wrapText: false };
             });
@@ -79,7 +107,7 @@ async function mergeFiles() {
     const dataFromFile3 = sheet3FromFile3.getSheetValues().slice(1); // Skip header row
     sheet2.addRows(dataFromFile3);
 
-    // Generate the output file name
+    // Generate the output file name using file3's name
     const file3Name = file3Input.name;
     const outputFileName = file3Name.replace('_no_order', '');
 
@@ -88,7 +116,7 @@ async function mergeFiles() {
     const url = URL.createObjectURL(updatedFile1);
     const a = document.createElement('a');
     a.href = url;
-    a.download = outputFileName;
+    a.download = outputFileName; // Use the modified file3 name
     a.click();
     URL.revokeObjectURL(url);
 }
@@ -100,4 +128,9 @@ function fileToArrayBuffer(file) {
         reader.onerror = reject;
         reader.readAsArrayBuffer(file);
     });
+}
+
+// Helper function to clean numeric strings
+function cleanNumericString(value) {
+    return parseInt(value.replace(/\./g, ''), 10);
 }
