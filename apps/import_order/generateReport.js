@@ -25,28 +25,46 @@ function extractDataFromXML(xmlData) {
 }
 
 // Function to convert JSON data to XLSX with custom headers
-function generateXLSXFromData(data) {
-    let workbook = XLSX.utils.book_new();
-    
-    // Define custom headers and their corresponding fields in data
-    let headers = ['No.PO', 'Username', 'No.Pesanan', 'Tgl.Pesanan'];
-    let dataWithHeaders = data.map(item => ({
-        'No.PO': item.PONO,
-        'Username': item.SHIPTO1,
-        'No.Pesanan': item.SONO,
-        'Tgl.Pesanan': item.SODATE
-    }));
+async function generateXLSXFromData(data, fileName) {
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Sheet1');
 
-    // Create a worksheet with custom headers
-    let worksheet = XLSX.utils.json_to_sheet(dataWithHeaders, { header: headers });
-    
-    // Append worksheet to workbook
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
-    
-    // Convert workbook to binary array
-    let xlsxFile = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-    
-    return xlsxFile;
+    // Define custom headers
+    const headers = ['No.PO', 'Username', 'No.Pesanan', 'Tgl.Pesanan'];
+
+    // Add the file name as the first row and merge it across the four columns
+    worksheet.addRow([fileName]);
+    worksheet.mergeCells('A1:D1');
+
+    // Apply styles to the header cell
+    worksheet.getCell('A1').font = { size: 14, bold: true };
+    worksheet.getCell('A1').alignment = { horizontal: 'center', vertical: 'center' };
+
+    // Add the headers as the second row
+    worksheet.addRow(headers);
+
+    // Add the data starting from the third row
+    data.forEach(item => {
+        worksheet.addRow([item.PONO, item.SHIPTO1, item.SONO, item.SODATE]);
+    });
+
+    // Apply borders to non-empty cells
+    worksheet.eachRow((row, rowNumber) => {
+        row.eachCell((cell, colNumber) => {
+            if (cell.value) {
+                cell.border = {
+                    top: { style: 'thin' },
+                    left: { style: 'thin' },
+                    bottom: { style: 'thin' },
+                    right: { style: 'thin' }
+                };
+            }
+        });
+    });
+
+    // Generate buffer
+    const buffer = await workbook.xlsx.writeBuffer();
+    return buffer;
 }
 
 // Function to handle file upload and generate report
@@ -54,12 +72,11 @@ function generateReport() {
     let xmlFile = document.getElementById('xmlFileInput').files[0];
     if (xmlFile) {
         let reader = new FileReader();
-        reader.onload = function(e) {
+        reader.onload = async function(e) {
             let xmlData = e.target.result;
             let extractedData = extractDataFromXML(xmlData);
-            let xlsxFile = generateXLSXFromData(extractedData);
-            // Extract the original file name without the extension
             let fileName = xmlFile.name.replace(/\.[^/.]+$/, ""); // Remove file extension
+            let xlsxFile = await generateXLSXFromData(extractedData, fileName);
             let newFileName = fileName + "_report.xlsx"; // Append "_report"
             downloadXLSXFile(xlsxFile, newFileName);
         };
