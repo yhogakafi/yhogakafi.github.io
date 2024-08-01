@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+        }
+        .login-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            background-color: white;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        .button-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: row;
+        }
+        #button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.2s ease; /* Smooth transition for movement */
+        }
+        .btn {
+            margin: 0 10px 0;
+        }
+        input {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <input type="email" id="login-email" placeholder="Email" required>
+        <input type="password" id="login-password" placeholder="Password" required>
+        <div class="button-container">
+            <button id="button" class="btn">Login</button>
+            <button id="button2" class="btn">Register</button>
+        </div>
+    </div>
+
+    <script>
+        const button = document.getElementById('button');
+        const emailInput = document.getElementById('login-email');
+        const passwordInput = document.getElementById('login-password');
+
+        document.addEventListener('mousemove', mouse_position);
+
+        function mouse_position(event) {
+            const mouseX = event.clientX;
+            const mouseY = event.clientY;
+
+            const buttonOffset = getOffset(button);
+            const buttonX = buttonOffset.left + (button.offsetWidth / 2);
+            const buttonY = buttonOffset.top + (button.offsetHeight / 2);
+
+            const distance = calculateDistance(mouseX, mouseY, buttonX, buttonY);
+
+            if (!emailInput.value || !passwordInput.value) {
+                if (distance < 100) {
+                    button.textContent = "Login";
+                    const displacementFactor = (100 - distance) * 0.1;
+                    const perspectiveFactor = calculatePerspectiveFactor(buttonX, buttonY);
+
+                    button.style.transform = `translate(${-(mouseX - buttonX) * displacementFactor * perspectiveFactor}px, ${-(mouseY - buttonY) * displacementFactor * perspectiveFactor}px)`;
+                } else {
+                    button.textContent = "Login";
+                    button.style.transform = 'translate(0, 0)';
+                }
+            } else {
+                button.textContent = "Login";
+                button.style.transform = 'translate(0, 0)';
+            }
+        }
+
+        button.addEventListener('click', function() {
+            if (emailInput.value !== "admin@gmail.com" || passwordInput.value !== "admin") {
+                alert("Invalid credentials. Please try again.");
+            } else {
+                alert("Sign in successful!");
+            }
+        });
+
+        function getOffset(el) {
+            const rect = el.getBoundingClientRect();
+            return {
+                left: rect.left + window.scrollX,
+                top: rect.top + window.scrollY
+            };
+        }
+
+        function calculateDistance(X, Y, x, y) {
+            return Math.sqrt((X - x) ** 2 + (Y - y) ** 2);
+        }
+
+        function calculatePerspectiveFactor(x, y) {
+            const screenWidth = window.innerWidth;
+            const screenHeight = window.innerHeight;
+
+            const distanceFromCenter = Math.sqrt((x - screenWidth / 2) ** 2 + (y - screenHeight / 2) ** 2);
+
+            return 1 - distanceFromCenter / (Math.sqrt(screenWidth ** 2 + screenHeight ** 2) / 2);
+        }
+    </script>
+</body>
+</html>

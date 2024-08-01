@@ -111,6 +111,16 @@ document.addEventListener('DOMContentLoaded', function() {
         // Get the selected PROJECTID value
         const selectedProjectID = document.querySelector('input[name="projectID"]:checked').value;
 
+        // Define a mapping from PROJECTID to DEPTID
+    const projectIdToDeptId = {
+        'TMO-1101': 'SHOPEE / SCELTA',
+        'TMO-1009': 'SHOPEE / GRAPE'
+        // Add more mappings as needed
+    };
+
+        // Determine the DEPTID based on the selected PROJECTID
+        const deptId = projectIdToDeptId[selectedProjectID] || 'UNKNOWN';
+
         // Get the selected SHIPVIAID value
         const selectedShipviaID = document.querySelector('input[name="shipviaID"]:checked').value;
 
@@ -118,7 +128,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const selectedFIRSTNAME = document.querySelector('input[name="FIRSTNAME"]:checked').value;
 
         // Opening NMEXML tag with the random EximID
-        xmlString += `<NMEXML EximID="${randomEximID}" BranchCode="ONLINE" ACCOUNTANTCOPYID="">\n`;
+        xmlString += `<NMEXML EximID="${randomEximID}" BranchCode="GPD" ACCOUNTANTCOPYID="">\n`;
 
         // Opening TRANSACTIONS tag
         xmlString += `  <TRANSACTIONS OnError="CONTINUE">\n`;
@@ -140,17 +150,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 xmlString += `        <ITEMNO>${row[8] || ''}</ITEMNO>\n`;
                 xmlString += `        <QUANTITY>${row[9] || ''}</QUANTITY>\n`;
                 xmlString += `        <ITEMUNIT>${row[10] || ''}</ITEMUNIT>\n`;
-                xmlString += `        <UNITRATIO>${row[11] || ''}</UNITRATIO>\n`;
+                xmlString += `        <UNITRATIO>1</UNITRATIO>\n`;
                 for (let i = 12; i <= 21; i++) {
                     xmlString += `        <ITEMRESERVED${i-11}>${row[i] || ''}</ITEMRESERVED${i-11}>\n`;
                 }
                 xmlString += `        <ITEMOVDESC>${row[22] || ''}</ITEMOVDESC>\n`;
                 xmlString += `        <UNITPRICE>${row[23] || ''}</UNITPRICE>\n`;
                 xmlString += `        <DISCPC>${row[24] ? '#' + row[24] : ''}</DISCPC>\n`;
-                xmlString += `        <TAXCODES>T</TAXCODES>\n`;
-                xmlString += `        <PROJECTID>${selectedProjectID}</PROJECTID>\n`; // Use the selected PROJECTID value
-                xmlString += `        <DEPTID>ONLINE-TMS</DEPTID>\n`;
-                xmlString += `        <QTYSHIPPED>${row[28] || ''}</QTYSHIPPED>\n`;
+                xmlString += `        <TAXCODES></TAXCODES>\n`;
+                xmlString += `        <PROJECTID></PROJECTID>\n`;
+                xmlString += `        <DEPTID>${deptId}</DEPTID>\n`; // Use the determined DEPTID value
+                xmlString += `        <QTYSHIPPED>0</QTYSHIPPED>\n`;
                 xmlString += `      </ITEMLINE>\n`;
             });
 
@@ -160,17 +170,17 @@ document.addEventListener('DOMContentLoaded', function() {
             xmlString += `      <SONO>${sonoValue}</SONO>\n`;
 
             xmlString += `      <SODATE>${formattedDate}</SODATE>\n`;
-            xmlString += `      <TAX1ID>T</TAX1ID>\n`;
-            xmlString += `      <TAX1CODE>T</TAX1CODE>\n`;
-            xmlString += `      <TAX2CODE>${firstRow[33] || ''}</TAX2CODE>\n`;
-            xmlString += `      <TAX1RATE>11</TAX1RATE>\n`;
-            xmlString += `      <TAX2RATE>${firstRow[35] || ''}</TAX2RATE>\n`;
-            xmlString += `      <TAX1AMOUNT>${firstRow[36] || ''}</TAX1AMOUNT>\n`;
-            xmlString += `      <TAX2AMOUNT>${firstRow[37] || ''}</TAX2AMOUNT>\n`;
+            xmlString += `      <TAX1ID></TAX1ID>\n`;
+            xmlString += `      <TAX1CODE></TAX1CODE>\n`;
+            xmlString += `      <TAX2CODE></TAX2CODE>\n`;
+            xmlString += `      <TAX1RATE>0</TAX1RATE>\n`;
+            xmlString += `      <TAX2RATE>0</TAX2RATE>\n`;
+            xmlString += `      <TAX1AMOUNT>0</TAX1AMOUNT>\n`;
+            xmlString += `      <TAX2AMOUNT>0</TAX2AMOUNT>\n`;
             xmlString += `      <RATE>1</RATE>\n`;
-            xmlString += `      <TAXINCLUSIVE>1</TAXINCLUSIVE>\n`;
-            xmlString += `      <CUSTOMERISTAXABLE>1</CUSTOMERISTAXABLE>\n`;
-            xmlString += `      <CASHDISCOUNT>${firstRow[41] || ''}</CASHDISCOUNT>\n`;
+            xmlString += `      <TAXINCLUSIVE>0</TAXINCLUSIVE>\n`;
+            xmlString += `      <CUSTOMERISTAXABLE>0</CUSTOMERISTAXABLE>\n`;
+            xmlString += `      <CASHDISCOUNT>0</CASHDISCOUNT>\n`;
             xmlString += `      <CASHDISCPC>${firstRow[42] || ''}</CASHDISCPC>\n`;
             xmlString += `      <FREIGHT>${firstRow[43] || ''}</FREIGHT>\n`;
             xmlString += `      <TERMSID>C.O.D</TERMSID>\n`;
