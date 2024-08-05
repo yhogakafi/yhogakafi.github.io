@@ -625,4 +625,16 @@ label {
   .file-input {
     margin: 0;
   }
+  .footer {
+    display: flex;
+  }
+  .theme {
+    display: flex; /* Use flex for alignment if needed */
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    cursor: pointer;
+    color: #394a56;
+    z-index: 1000; /* Ensure it is above other content */
+  }
 }
