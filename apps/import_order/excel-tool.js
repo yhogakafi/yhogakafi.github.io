@@ -112,6 +112,51 @@ async function mergeFiles() {
         const dataFromFile3 = sheet3FromFile3.getSheetValues().slice(1); // Skip header row
         sheet2.addRows(dataFromFile3);
 
+        // Add a new column header (optional)
+        sheet2.getCell(1, 2).value = 'Number Series'; // Header for the new column
+
+        // Add the number series in the new column B
+        for (let rowNumber = 2; rowNumber <= dataFromFile3.length + 1; rowNumber++) { // Start from 2 to skip header row
+            sheet2.getCell(rowNumber, 2).value = rowNumber - 1; // Fill with numbers from 1 to number of rows
+        }
+
+        // Move existing columns to the right
+        const lastColumn = sheet2.columnCount;
+        for (let colIndex = lastColumn; colIndex >= 3; colIndex--) {
+            sheet2.getColumn(colIndex).eachCell({ includeEmpty: true }, (cell) => {
+                const newCell = sheet2.getCell(cell.row, colIndex + 1);
+                newCell.value = cell.value;
+                newCell.style = cell.style;
+            });
+        }
+
+        // Clear the original columns (optional)
+        for (let colIndex = lastColumn; colIndex >= 3; colIndex--) {
+            sheet2.getColumn(colIndex).eachCell({ includeEmpty: true }, (cell) => {
+                cell.value = null;
+            });
+        }
+
+        // Insert a new column into 'daftar pesanan marketplace'
+        const lastColumnIndex = sheet1.columnCount;
+        sheet1.getColumn(lastColumnIndex).eachCell({ includeEmpty: true }, (cell) => {
+            const newCell = sheet1.getCell(cell.row, lastColumnIndex + 1);
+            newCell.value = cell.value;
+            newCell.style = cell.style;
+        });
+
+        // Add header for the new column
+        sheet1.getCell(1, lastColumnIndex + 1).value = 'VLOOKUP Result';
+
+        // Apply VLOOKUP formula to the new column
+        sheet1.eachRow({ includeEmpty: true }, (row, rowNumber) => {
+            if (rowNumber > 1) { // Skip header row
+                const vlookupFormula = `=VLOOKUP(I${rowNumber},'no pesanan dari pdf mita'!A:B,2,FALSE)`;
+                sheet1.getCell(rowNumber, lastColumnIndex + 1).value = { formula: vlookupFormula };
+            }
+        });
+
+
         // Apply manual formatting to 'Nomor Referensi SKU' column
         const skuColumnIndex = headersFile1.indexOf('Nomor Referensi SKU') + 1; // Get the 1-based index
         sheet1.getColumn(skuColumnIndex).eachCell({ includeEmpty: true }, (cell) => {
