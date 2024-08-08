@@ -1,67 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>XLSX to XML Converter</title>
-    <link id="theme-stylesheet" rel="stylesheet" href="light-mode.css" />
-  </head>
 
-  <body>
-    <!-- Loading Spinner -->
-    <div id="loadingSpinner" class="spinner" style="display: none">
-      <img src="waiting.gif" alt="" />
-      <!-- <div class="spinner-border"></div> -->
-      <p>Processing...</p>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>XLSX to XML Converter</title>
+  <link id="theme-stylesheet" rel="stylesheet" href="light-mode.css" />
+</head>
+
+<body>
+  <!-- Loading Spinner -->
+  <div id="loadingSpinner" class="spinner" style="display: none">
+    <img src="waiting.gif" alt="" />
+    <!-- <div class="spinner-border"></div> -->
+    <p>Processing...</p>
+  </div>
+  <!-- Modal 1 -->
+  <div id="modal1" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('modal1')">&times;</span>
+      <h2>Ekspor nomor pesanan dari label pengiriman</h2>
+      <p>cek kembali file hasil ekspor</p>
+      <p>untuk label pengiriman SPX Hemat biasanya akan ada tambahan string "Tidak" atau "Ya" setelah nomor pesanan,
+        hapus string tersebut.</p>
+      <p>belum bisa dipakai untuk label pengiriman JNE, jadi harus buat manual file excelnya.</p>
     </div>
-    <!-- Modal 1 -->
-    <div id="modal1" class="modal">
-      <div class="modal-content">
-        <span class="close" onclick="closeModal('modal1')">&times;</span>
-        <h2>Ekspor nomor pesanan dari label pengiriman</h2>
-        <p>cek kembali file hasil ekspor</p>
-        <p>untuk label pengiriman SPX Hemat biasanya akan ada tambahan string "Tidak" atau "Ya" setelah nomor pesanan, hapus string tersebut.</p>
-        <p>belum bisa dipakai untuk label pengiriman JNE, jadi harus buat manual file excelnya.</p>
+  </div>
+  <div class="first-tool">
+    <div class="container1">
+      <div class="tools_no1">
+        <h1>1</h1>
+      </div>
+      <h2>Export Order Number</h2>
+      <h3>"ekspor nomor pesanan dari file pdf label pengiriman"</h3>
+      <input type="file" id="pdf-file" accept=".pdf" class="file-input" />
+      <div class="modal-container" onclick="showModal('modal1')">
+        <img src="note.svg" class="icon-svg" alt="note-icon" />
+        <button>Note</button>
+      </div>
+      <label class="radio-label">
+        <input type="radio" name="keyword" value="No.Pesanan: "> SHOPEE EXPRESS
+      </label>
+      <label class="radio-label">
+        <input type="radio" name="keyword" value="No. Pesanan: "> JNE
+      </label>
+      <div class="button-red" onclick="extractData()">
+        <div class="circle-red"></div>
+        <button>Extract Data</button>
       </div>
     </div>
-    <div class="first-tool">
-      <div class="container1">
-        <div class="tools_no1">
-          <h1>1</h1>
-        </div>
-        <h2>Export Order Number</h2>
-        <h3>"ekspor nomor pesanan dari file pdf label pengiriman"</h3>
-        <input type="file" id="pdf-file" accept=".pdf" class="file-input" />
-        <div class="modal-container" onclick="showModal('modal1')">
-          <img src="note.svg"class="icon-svg" alt="note-icon" />
-          <button>Note</button>
-        </div>
-        <label class="radio-label">
-            <input type="radio" name="keyword" value="No.Pesanan: "> SHOPEE EXPRESS
-        </label>
-        <label class="radio-label">
-            <input type="radio" name="keyword" value="No. Pesanan: "> JNE
-        </label>
-        <div class="button-red" onclick="extractData()">
-          <div class="circle-red"></div>
-          <button>Extract Data</button>
-        </div>
+    <div class="excel-tool">
+      <h2>Excel Processor (Optional)</h2>
+      <h3>"untuk menggabungkan file excel"</h3>
+      <label for="file1">template.xlsx</label>
+      <input type="file" id="file1" accept=".xlsx" class="file-input" />
+      <label for="file2">dokumen marketplace</label>
+      <input type="file" id="file2" accept=".xlsx" class="file-input" />
+      <label for="file3">excel hasil ekspor pdf resi</label>
+      <input type="file" id="file3" accept=".xlsx" class="file-input" />
+      <div class="button-red" onclick="mergeFiles()">
+        <div class="circle-red"></div>
+        <button>Process file</button>
       </div>
-      <div class="excel-tool">
-        <h2>Excel Processor (Optional)</h2>
-        <h3>"untuk menggabungkan file excel"</h3>
-        <label for="file1">template.xlsx</label>
-        <input type="file" id="file1" accept=".xlsx" class="file-input" />
-        <label for="file2">dokumen marketplace</label>
-        <input type="file" id="file2" accept=".xlsx" class="file-input" />
-        <label for="file3">excel hasil ekspor pdf resi</label>
-        <input type="file" id="file3" accept=".xlsx" class="file-input" />
-        <div class="button-red" onclick="mergeFiles()">
-          <div class="circle-red"></div>
-          <button>Process file</button>
-        </div>
-      </div>
-      <!-- <div class="template">
+    </div>
+    <!-- <div class="template">
             <div class="circle1">
                 <div class="rectangle"></div>
                 <div class="flipped-triangle"></div>
@@ -72,154 +74,93 @@
                 <button class="button1">Download</button>
             </a>
         </div> -->
-    </div>
+  </div>
 
-    <div class="mid-tool">
-      <div class="container2">
-        <div class="tools_no2">
-          <h1>2</h1>
+  <div class="mid-tool">
+    <div class="container2">
+      <div class="tools_no2">
+        <h1>2</h1>
+      </div>
+      <h2>XLSX to XML Converter</h2>
+      <h3>
+        "konversi file Excel berisi data pesanan ke XML untuk import ke
+        Accurate"
+      </h3>
+      <input type="file" id="fileInput" accept=".xlsx" class="file-input" />
+      <div class="input-group">
+        <label for="sonoInput">No. Pesanan 5 digit (contoh : 00999)</label>
+        <input type="text" id="sonoInput" placeholder="Input di sini" class="text-input" />
+        <div class="tooltip">
+          <h3>Jangan lupa centang PESANAN TERPROSES di Accurate</h3>
         </div>
-        <h2>XLSX to XML Converter</h2>
-        <h3>
-          "konversi file Excel berisi data pesanan ke XML untuk import ke
-          Accurate"
-        </h3>
-        <input type="file" id="fileInput" accept=".xlsx" class="file-input" />
-        <div class="input-group">
-          <label for="sonoInput">No. Pesanan 5 digit (contoh : 00999)</label>
-          <input
-            type="text"
-            id="sonoInput"
-            placeholder="Input di sini"
-            class="text-input"
-          />
-          <div class="tooltip">
-            <h3>Jangan lupa centang PESANAN TERPROSES di Accurate</h3>
-          </div>
+      </div>
+      <div class="radio-group">
+        <label>Kode Marketplace</label>
+        <div class="marketplace">
+          <input type="radio" id="projectTMO1101" name="projectID" value="TMO-1101" class="radio-input" />
+          <label for="projectTMO1101" class="radio-label">TMO-1101 (SHOPEE SCELTA)</label><br />
+          <input type="radio" id="projectTMO1009" name="projectID" value="TMO-1009" class="radio-input" />
+          <label for="projectTMO1009" class="radio-label">TMO-1009 (SHOPEE GRAPE)</label>
         </div>
-        <div class="radio-group">
-          <label>Kode Marketplace</label>
-          <div class="marketplace">
-            <input
-              type="radio"
-              id="projectTMO1101"
-              name="projectID"
-              value="TMO-1101"
-              class="radio-input"
-            />
-            <label for="projectTMO1101" class="radio-label"
-              >TMO-1101 (SHOPEE SCELTA)</label
-            ><br />
-            <input
-              type="radio"
-              id="projectTMO1009"
-              name="projectID"
-              value="TMO-1009"
-              class="radio-input"
-            />
-            <label for="projectTMO1009" class="radio-label"
-              >TMO-1009 (SHOPEE GRAPE)</label
-            >
-          </div>
+      </div>
+      <div class="radio-group">
+        <label>Jasa Kirim</label>
+        <div class="jasa-kirim">
+          <input type="radio" id="shipviaSPXStandard" name="shipviaID" value="SPX Standard" class="radio-input" />
+          <label for="shipviaSPXStandard" class="radio-label">SPX Standard</label><br />
+          <input type="radio" id="shipviaSPXHemat" name="shipviaID" value="SPX Hemat" class="radio-input" />
+          <label for="shipviaSPXHemat" class="radio-label">SPX Hemat</label>
+          <input type="radio" id="shipviaJNEReg" name="shipviaID" value="JNE Reguler" class="radio-input" />
+          <label for="shipviaJNEReg" class="radio-label">JNE Reguler</label>
         </div>
-        <div class="radio-group">
-          <label>Jasa Kirim</label>
-          <div class="jasa-kirim">
-            <input
-              type="radio"
-              id="shipviaSPXStandard"
-              name="shipviaID"
-              value="SPX Standard"
-              class="radio-input"
-            />
-            <label for="shipviaSPXStandard" class="radio-label"
-              >SPX Standard</label
-            ><br />
-            <input
-              type="radio"
-              id="shipviaSPXHemat"
-              name="shipviaID"
-              value="SPX Hemat"
-              class="radio-input"
-            />
-            <label for="shipviaSPXHemat" class="radio-label">SPX Hemat</label>
-            <input
-              type="radio"
-              id="shipviaJNEReg"
-              name="shipviaID"
-              value="JNE Reguler"
-              class="radio-input"
-            />
-            <label for="shipviaJNEReg" class="radio-label">JNE Reguler</label>
-          </div>
+      </div>
+      <div class="radio-group">
+        <label>Penjual</label>
+        <div class="penjual">
+          <input type="radio" id="FIRSTNAMEYHOGA" name="FIRSTNAME" value="YOGHA" class="radio-input" />
+          <!-- value="" is case sensitive!!! -->
+          <label for="FIRSTNAMEYHOGA" class="radio-label">Yhoga</label><br />
+          <input type="radio" id="FIRSTNAMEMERRY" name="FIRSTNAME" value="Merry" class="radio-input" />
+          <!-- value="" is case sensitive!!! -->
+          <label for="FIRSTNAMEMERRY" class="radio-label">Merry</label>
         </div>
-        <div class="radio-group">
-          <label>Penjual</label>
-          <div class="penjual">
-            <input
-              type="radio"
-              id="FIRSTNAMEYHOGA"
-              name="FIRSTNAME"
-              value="YOGHA"
-              class="radio-input"
-            />
-            <!-- value="" is case sensitive!!! -->
-            <label for="FIRSTNAMEYHOGA" class="radio-label">Yhoga</label><br />
-            <input
-              type="radio"
-              id="FIRSTNAMEMERRY"
-              name="FIRSTNAME"
-              value="Merry"
-              class="radio-input"
-            />
-            <!-- value="" is case sensitive!!! -->
-            <label for="FIRSTNAMEMERRY" class="radio-label">Merry</label>
-          </div>
-        </div>
-        <div class="button-blue" id="convertBtn">
-          <div class="circle-blue"></div>
-          <button>Convert to XML</button>
-        </div>
+      </div>
+      <div class="button-blue" id="convertBtn">
+        <div class="circle-blue"></div>
+        <button>Convert to XML</button>
       </div>
     </div>
-    <div class="container3">
-      <div class="tools_no3">
-        <h1>3</h1>
-      </div>
-      <h2>Buat Laporan File Excel</h2>
-      <h3>"buat laporan dari file XML"</h3>
-      <input type="file" id="xmlFileInput" accept=".xml" class="file-input" />
-      <div class="button-org" id="generateReportButton">
-        <div class="circle-org"></div>
-        <button>Generate Report</button>
-      </div>
+  </div>
+  <div class="container3">
+    <div class="tools_no3">
+      <h1>3</h1>
     </div>
-    <label class="theme">
-      <div class="toggle">
-        <input class="toggle-state" type="checkbox" id="dark-mode-toggle" />
-        <div class="indicator"></div>
-      </div>
-      <div class="theme-text">dark mode</div>
-    </label>
-    <div class="footer">
-      <h4>©️ 2024 <a href="https://yhogakafi.github.io">yhogakafi</a></h4>
+    <h2>Buat Laporan File Excel</h2>
+    <h3>"buat laporan dari file XML"</h3>
+    <input type="file" id="xmlFileInput" accept=".xml" class="file-input" />
+    <div class="button-org" id="generateReportButton">
+      <div class="circle-org"></div>
+      <button>Generate Report</button>
     </div>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.8.335/pdf.min.js"
-      defer
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"
-      defer
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"
-      defer
-    ></script>
-    <script src="xlsxConverter.js" defer></script>
-    <script src="generateReport.js" defer></script>
-    <script src="export_order_no.js" defer></script>
-    <script src="theme.js" defer></script>
-    <script src="excel-tool.js" defer></script>
-  </body>
+  </div>
+  <label class="theme">
+    <div class="toggle">
+      <input class="toggle-state" type="checkbox" id="dark-mode-toggle" />
+      <div class="indicator"></div>
+    </div>
+    <div class="theme-text">dark mode</div>
+  </label>
+  <div class="footer">
+    <h4>©️ 2024 <a href="https://yhogakafi.github.io">yhogakafi</a></h4>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.8.335/pdf.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js" defer></script>
+  <script src="xlsxConverter.js" defer></script>
+  <script src="generateReport.js" defer></script>
+  <script src="export_order_no.js" defer></script>
+  <script src="theme.js" defer></script>
+  <script src="excel-tool.js" defer></script>
+</body>
+
 </html>
