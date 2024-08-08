@@ -1,6 +1,6 @@
 async function extractData() {
-    // Show the spinner
-    document.getElementById('loadingSpinner').style.display = 'block';
+        // Show the spinner
+        document.getElementById('loadingSpinner').style.display = 'block';
 
     try {
         // Get the file from the input
@@ -10,9 +10,6 @@ async function extractData() {
             alert('Please select a PDF file.');
             return;
         }
-
-        // Get the selected keyword
-        const selectedKeyword = document.querySelector('input[name="keyword"]:checked').value;
 
         // Read the file as an ArrayBuffer
         const arrayBuffer = await file.arrayBuffer();
@@ -35,11 +32,14 @@ async function extractData() {
             text += pageText + ' ';
         }
 
-        // Extract data based on the selected keyword
-        const dataAfterKeyword = extractDataAfterKeyword(text, selectedKeyword);
+        // Define the keyword to search for
+        const keyword = 'No.Pesanan: ';
+        
+        // Extract the data after the keyword
+        const dataAfterKeyword = extractDataAfterKeyword(text, keyword);
 
         if (dataAfterKeyword.length === 0) {
-            alert('No data found after the selected keyword.');
+            alert('No data found after the keyword.');
             return;
         }
 
