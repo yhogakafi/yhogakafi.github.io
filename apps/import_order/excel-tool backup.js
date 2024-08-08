@@ -43,7 +43,6 @@ async function mergeFiles() {
             'No. Pesanan',
             'Countif dgn pdf mita',
             'Harga Setelah Diskon',
-            'Waktu Pesanan Dibuat'
         ];
 
         // Get the header row from File2
