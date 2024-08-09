@@ -156,6 +156,23 @@ async function mergeFiles() {
             }
         });
 
+        // Apply VLOOKUP formula to 'KODE PLU' column
+        const kodePluColumnIndex = headersFile1.indexOf('KODE PLU') + 1; // Get the 1-based index
+        sheet1.eachRow({ includeEmpty: true }, (row, rowNumber) => {
+            if (rowNumber > 1) { // Skip header row
+                const vlookupFormula = `=VLOOKUP(D${rowNumber},'master barang'!A:B,2,FALSE)`;
+                sheet1.getCell(rowNumber, kodePluColumnIndex).value = { formula: vlookupFormula };
+            }
+        });
+
+        // Apply VLOOKUP formula to 'UNIT' column
+        const UnitColumnIndex = headersFile1.indexOf('UNIT') + 1; // Get the 1-based index
+        sheet1.eachRow({ includeEmpty: true }, (row, rowNumber) => {
+            if (rowNumber > 1) { // Skip header row
+                const vlookupFormula = `=VLOOKUP(D${rowNumber},'master barang'!A:D,4,FALSE)`;
+                sheet1.getCell(rowNumber, UnitColumnIndex).value = { formula: vlookupFormula };
+            }
+        });        
 
         // Apply manual formatting to 'Nomor Referensi SKU' column
         const skuColumnIndex = headersFile1.indexOf('Nomor Referensi SKU') + 1; // Get the 1-based index
