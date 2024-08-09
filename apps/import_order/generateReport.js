@@ -30,11 +30,11 @@ async function generateXLSXFromData(data, fileName) {
     const worksheet = workbook.addWorksheet('Sheet1');
 
     // Define custom headers
-    const headers = ['No.PO', 'Username', 'No.Pesanan', 'Tgl.Pesanan'];
+    const headers = ['No.', 'No.PO', 'Username', 'No.Pesanan', 'Tgl.Pesanan'];
 
-    // Add the file name as the first row and merge it across the four columns
+    // Add the file name as the first row and merge it across the five columns
     worksheet.addRow([fileName]);
-    worksheet.mergeCells('A1:D1');
+    worksheet.mergeCells('A1:E1');
 
     // Apply styles to the header cell
     worksheet.getCell('A1').font = { size: 14, bold: true };
@@ -44,8 +44,8 @@ async function generateXLSXFromData(data, fileName) {
     worksheet.addRow(headers);
 
     // Add the data starting from the third row
-    data.forEach(item => {
-        worksheet.addRow([item.PONO, item.SHIPTO1, item.SONO, item.SODATE]);
+    data.forEach((item, index) => {
+        worksheet.addRow([index + 1, item.PONO, item.SHIPTO1, item.SONO, item.SODATE]);
     });
 
     // Apply borders to non-empty cells
@@ -66,6 +66,7 @@ async function generateXLSXFromData(data, fileName) {
     const buffer = await workbook.xlsx.writeBuffer();
     return buffer;
 }
+
 
 // Function to handle file upload and generate report
 function generateReport() {
