@@ -344,6 +344,10 @@ label {
   font-weight: bold;
 }
 
+.radio-label input[type="radio"]:checked + span {
+  font-weight: bold;
+}
+
 .marketplace {
   margin-bottom: 10px;
 }

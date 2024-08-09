@@ -342,6 +342,11 @@ label {
   color: yellow;
 }
 
+.radio-label input[type="radio"]:checked + span {
+  font-weight: bold;
+    color: yellow;
+}
+
 .marketplace {
   margin-bottom: 10px;
 }
