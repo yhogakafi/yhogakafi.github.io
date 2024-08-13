@@ -12,12 +12,14 @@ function extractDataFromXML(xmlData) {
         let SHIPTO1 = salesOrder.getElementsByTagName('SHIPTO1')[0].textContent;
         let SONO = salesOrder.getElementsByTagName('SONO')[0].textContent;
         let SODATE = salesOrder.getElementsByTagName('SODATE')[0].textContent;
+        let DESCRIPTION = salesOrder.getElementsByTagName('DESCRIPTION')[0].textContent;
 
         extractedData.push({
             PONO: PONO,
             SHIPTO1: SHIPTO1,
             SONO: SONO,
-            SODATE: SODATE
+            SODATE: SODATE,
+            DESCRIPTION: DESCRIPTION
         });
     }
 
@@ -30,11 +32,11 @@ async function generateXLSXFromData(data, fileName) {
     const worksheet = workbook.addWorksheet('Sheet1');
 
     // Define custom headers
-    const headers = ['No.', 'No.PO', 'Username', 'No.Pesanan', 'Tgl.Pesanan'];
+    const headers = ['No.', 'No.PO', 'Username', 'No.Pesanan', 'Tgl.Pesanan', 'No. Resi'];
 
     // Add the file name as the first row and merge it across the five columns
     worksheet.addRow([fileName]);
-    worksheet.mergeCells('A1:E1');
+    worksheet.mergeCells('A1:F1');
 
     // Apply styles to the header cell
     worksheet.getCell('A1').font = { size: 14, bold: true };
@@ -45,7 +47,7 @@ async function generateXLSXFromData(data, fileName) {
 
     // Add the data starting from the third row
     data.forEach((item, index) => {
-        worksheet.addRow([index + 1, item.PONO, item.SHIPTO1, item.SONO, item.SODATE]);
+        worksheet.addRow([index + 1, item.PONO, item.SHIPTO1, item.SONO, item.SODATE, item.DESCRIPTION]);
     });
 
     // Apply borders to non-empty cells
