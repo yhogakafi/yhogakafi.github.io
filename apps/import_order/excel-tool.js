@@ -152,7 +152,7 @@ async function mergeFiles() {
         // Apply VLOOKUP formula to the new column
         sheet1.eachRow({ includeEmpty: true }, (row, rowNumber) => {
             if (rowNumber > 1) { // Skip header row
-                const vlookupFormula = `=VLOOKUP(I${rowNumber},'no pesanan dari pdf mita'!A:B,2,FALSE)`;
+                const vlookupFormula = `=VLOOKUP(J${rowNumber},'no pesanan dari pdf mita'!A:B,2,FALSE)`;
                 sheet1.getCell(rowNumber, lastColumnIndex + 1).value = { formula: vlookupFormula };
             }
         });
