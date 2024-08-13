@@ -38,6 +38,7 @@ async function mergeFiles() {
             'Nomor Referensi SKU',
             'Harga Awal',
             'DISKON',
+            'No. Resi',
             'Username (Pembeli)',
             'Alamat Pengiriman',
             'No. Pesanan',
