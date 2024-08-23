@@ -3,11 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <title>Excel to XML Converter</title>
+    <style>
+        body {
+            font-family: "Courier New", Courier, monospace;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+        }
+        h1 {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 8px;
+        }
+        input[type="file"],
+        input[type="date"],
+        input[type="text"],
+        button {
+            width: 80%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 1em;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+            border: none;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        #download {
+            text-align: center;
+            display: block;
+            margin-top: 15px;
+            font-size: 1em;
+            color: #007bff;
+            text-decoration: none;
+        }
+        #download:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-    <input type="file" id="upload" accept=".xlsx">
-    <button onclick="convert()">Convert to XML</button>
-    <a id="download" style="display: none;">Download XML</a>
+    <div class="container">
+        <h1>Excel to XML Converter</h1>
+
+        <label for="upload">Select Excel File:</label>
+        <input type="file" id="upload" accept=".xlsx">
+
+        <label for="date-picker">Select Date:</label>
+        <input type="date" id="date-picker">
+
+        <label for="invoice-no">Invoice Number:</label>
+        <input type="text" id="invoice-no" placeholder="Enter Invoice Number">
+
+        <button onclick="convert()">Convert to XML</button>
+        <a id="download" style="display: none;">Download XML</a>
+    </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="script.js"></script>
