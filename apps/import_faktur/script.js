@@ -31,11 +31,19 @@ function generateRandom6DigitNumber() {
 function convertToXML(data) {
     const eximID = generateRandom3DigitNumber(); // Generate a random 3-digit number for EximID
     const transactionID = generateRandom6DigitNumber(); // Generate a random 6-digit number for TRANSACTIONID
-
+    const deptID = document.getElementById('deptid').value;  // Fetch the selected DEPTID value
     // Fetch the selected date
     const selectedDate = document.getElementById('date-picker').value;
     // Fetch invoiceNo
     const invoiceNo = document.getElementById('invoice-no').value || 'TESTINI';
+
+    // Set CUSTOMERID based on the selected DEPTID
+    let customerID = '';
+    if (deptID === 'SHOPEE / SCELTA') {
+        customerID = 'TMO-1101';
+    } else if (deptID === 'SHOPEE / GRAPE') {
+        customerID = 'TMO-1009';
+    }
 
     // Initialize grouping objects for SOID
     const soidGroups = {};
@@ -91,7 +99,7 @@ function convertToXML(data) {
             xml += `                <UNITPRICE>${row[28] || ''}</UNITPRICE>\n`;
             xml += `                <ITEMDISCPC>${row[29] || ''}</ITEMDISCPC>\n`;
             xml += `                <TAXCODES/>\n`;
-            xml += `                <DEPTID>SHOPEE / SCELTA</DEPTID>\n`;
+            xml += `                <DEPTID>${deptID}</DEPTID>\n`;  // Insert the selected DEPTID value here
             xml += `                <GROUPSEQ/>\n`;
             xml += `                <SOSEQ>${index}</SOSEQ>\n`; // Sequential SOSEQ starting from 0
             xml += `                <BRUTOUNITPRICE>${row[34] || ''}</BRUTOUNITPRICE>\n`;
@@ -131,7 +139,7 @@ function convertToXML(data) {
     xml += '            <DELIVERYORDER></DELIVERYORDER>\n';
     xml += '            <FISCALRATE>1</FISCALRATE>\n';
     xml += `            <TAXDATE>${selectedDate}</TAXDATE>\n`;
-    xml += '            <CUSTOMERID>TMO-1101</CUSTOMERID>\n';
+    xml += `            <CUSTOMERID>${customerID}</CUSTOMERID>\n`;  // Insert the CUSTOMERID here
     xml += '            <SALESMANID>\n';
     xml += '                <LASTNAME></LASTNAME>\n';
     xml += '                <FIRSTNAME>YOGHA</FIRSTNAME>\n';
