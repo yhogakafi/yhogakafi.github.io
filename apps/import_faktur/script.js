@@ -14,8 +14,8 @@ function convert() {
         const worksheet = workbook.Sheets[sheetName];
         const json = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
 
-        const xml = convertToXML(json);
-        downloadXML(xml);
+        const { xml, invoiceNo } = convertToXML(json);
+        downloadXML(xml, invoiceNo);
     };
     reader.readAsBinaryString(file);
 }
@@ -159,15 +159,16 @@ function convertToXML(data) {
     xml += '    </TRANSACTIONS>\n';
     xml += '</NMEXML>';
 
-    return xml;
+    return { xml, invoiceNo };
 }
 
-function downloadXML(xml) {
+function downloadXML(xml, invoiceNo) {
     const blob = new Blob([xml], { type: 'application/xml' });
     const url = URL.createObjectURL(blob);
     const downloadLink = document.getElementById('download');
     downloadLink.href = url;
-    downloadLink.download = 'output.xml';
-    downloadLink.style.display = 'block';
-    downloadLink.textContent = 'Download XML';
+    downloadLink.download = `${invoiceNo}.xml`; // Use invoiceNo as the filename
+
+    // Trigger the download
+    downloadLink.click();
 }
