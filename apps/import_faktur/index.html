@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Excel to XML Converter</title>
+    <link href="https://fonts.googleapis.com/css2?family=Shrikhand&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #FFCAC4;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .tools {
+            align-items: center;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between; /* Distributes space between flex items */
+            width: 1000px;
+            background-color: #FFF8EE;
+            height: 500px;
+            overflow: hidden;
+            position: relative;
+        }
+        .container:nth-child(2) {
+            margin-left: auto; /* Pushes this container to the right end */
+        }
+        .tools img {
+            position: absolute;
+            bottom: -50px;
+            left: -100px;
+            width: 400px;
+            z-index: 1;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            border-radius: 20px;
+            width: 300px;
+            z-index: 2;
+        }
+        h1 {
+            font-family: "Shrikhand", serif;
+            font-size: 1.8em;
+            margin-bottom: 10px;
+            margin-top: 0;
+            text-align: center;
+            color: #FF7F4E;
+            max-width: 200px;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.8em;
+        }
+        input[type="file"],
+        input[type="date"],
+        input[type="text"] {
+            width: 80%;
+            padding: 5px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-family: inherit;
+            font-size: 0.8em;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #FF7F4E;
+            color: white;
+            cursor: pointer;
+            border: none;
+            width: 50%;
+            font-size: 1em;
+            border-radius: 10px;
+            height: 30px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        select {
+            width: 80%;
+            padding: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-family: inherit;
+            font-size: 0.8em;
+            background-color: #fff;
+            cursor: pointer;
+        }
+        .footer {
+            font-size: 0.8em;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .footer a {
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <div class="tools">
+        <img src="sunflower.svg" alt="">
+        <div class="container">
+            <h1>Excel Merger Tool</h1>
+        
+            <label for="upload-workbook1">Template Import Faktur</label>
+            <input type="file" id="upload-workbook1" accept=".xlsx">
+            <label for="upload-workbook2">Pengiriman dari Accurate</label>
+            <input type="file" id="upload-workbook2" accept=".xlsx">
+            <label for="upload-workbook3">File Income</label>
+            <input type="file" id="upload-workbook3" accept=".xlsx">
+            <label for="sheet-name">Nama sheet di file income</label>
+            <input type="text" id="sheet-name" placeholder="Input nama sheet di file income">
+            <button onclick="mergeWorkbooks()">Merge Excel Files</button>
+        </div>
+        <div class="container">
+            <h1>Excel to XML Converter</h1>
+            <label for="upload">Select Excel File:</label>
+            <input type="file" id="upload" accept=".xlsx">
+            <label for="date-picker">Select Date:</label>
+            <input type="date" id="date-picker">
+            <label for="invoice-no">Invoice Number:</label>
+            <input type="text" id="invoice-no" placeholder="Enter Invoice Number">
+            <label for="deptid">Select DEPTID:</label>
+            <select id="deptid">
+                <option value="SHOPEE / SCELTA">SHOPEE / SCELTA</option>
+                <option value="SHOPEE / GRAPE">SHOPEE / GRAPE</option>
+            </select>
+            <button onclick="convert()">Convert to XML</button>
+            <a id="download" style="display: none;">Download XML</a>
+        </div>
+    </div>
+    <div class="footer">
+        <h4>©️ 2024 <a href="https://yhogakafi.github.io">yhogakafi</a></h4>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js" defer></script>
+    <script src="script.js" defer></script>
+    <script src="exceltool.js" defer></script>
+
+</body>
+</html>
