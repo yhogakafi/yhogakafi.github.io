@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wheel of Fortune</title>
+</head>
+<body>
+    <h1>Wheel of Fortune</h1>
+    <textarea id="stringInput" placeholder="Paste your list of strings here, separated by commas or new lines"></textarea><br><br>
+    <button onclick="selectRandomString()">Spin the Wheel!</button>
+    <h2 id="result"></h2>
+
+    <script>
+        function selectRandomString() {
+            const input = document.getElementById('stringInput').value;
+            const strings = input.split(/\r?\n/).filter(str => str.trim() !== ''); // Split by newline and remove empty lines
+            const randomIndex = Math.floor(Math.random() * strings.length);
+            const selectedString = strings[randomIndex];
+            document.getElementById('result').innerText = selectedString;
+        }
+    </script>
+</body>
+</html>
