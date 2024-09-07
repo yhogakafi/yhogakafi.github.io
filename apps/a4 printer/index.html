@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Print Strings on A4</title>
+    <style>
+        /* Print-specific styles */
+        @media print {
+            @page {
+                size: A4;
+                margin: 0.5cm;
+            }
+            body {
+                font-family: Arial, sans-serif;
+                font-size: 9pt;
+            }
+            .container {
+                width: 100%;
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+                gap: 5px;
+            }
+            .string-item {
+                padding: 5px;
+                border: 1px solid black;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+            }
+            /* Hide these elements when printing */
+            h1, textarea, button {
+                display: none;
+            }
+        }
+
+        /* Regular screen styles */
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 9pt;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+            gap: 5px;
+        }
+
+        .string-item {
+            padding: 5px;
+            border: 1px solid black;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+    </style>
+</head>
+<body>
+    <h1>String Printer</h1>
+    <textarea id="stringInput" rows="10" cols="50" placeholder="Paste your strings here..."></textarea>
+    <br>
+    <button onclick="formatStrings()">Format Strings</button>
+    <button onclick="window.print()">Print</button>
+    
+    <div id="output" class="container"></div>
+
+    <script>
+        function formatStrings() {
+            const input = document.getElementById('stringInput').value.trim();
+            const strings = input.split(/\r?\n/); // Split by new lines
+            const outputDiv = document.getElementById('output');
+            outputDiv.innerHTML = ''; // Clear previous output
+
+            strings.forEach(string => {
+                const div = document.createElement('div');
+                div.classList.add('string-item');
+                div.textContent = string.slice(0, 15); // Ensure only 15 characters per string
+                outputDiv.appendChild(div);
+            });
+        }
+    </script>
+</body>
+</html>
