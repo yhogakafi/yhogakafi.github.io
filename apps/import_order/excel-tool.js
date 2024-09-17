@@ -43,6 +43,7 @@ async function mergeFiles() {
             'Alamat Pengiriman',
             'No. Pesanan',
             'Countif dgn pdf mita',
+            'Catatan dari Pembeli',
             'Harga Setelah Diskon',
             'Waktu Pesanan Dibuat'
         ];
@@ -183,6 +184,14 @@ async function mergeFiles() {
                 if (value.includes('grosir') || value.includes('10s') || value.includes('5s')) {
                     cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFF0000' } }; // Red fill
                 }
+            }
+        });
+
+        // Apply yellow fill color to the 'Catatan dari Pembeli' column
+        const catatanPembeliColumnIndex = headersFile1.indexOf('Catatan dari Pembeli') + 1; // Get the 1-based index
+        sheet1.getColumn(catatanPembeliColumnIndex).eachCell({ includeEmpty: true }, (cell) => {
+            if (cell.value) { // Check if cell is not empty
+                cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFF00' } }; // Apply yellow fill
             }
         });
 
