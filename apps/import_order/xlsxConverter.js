@@ -166,7 +166,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Create SONO value with the specified format and increment
             const sonoNumber = (sonoStartNumber++).toString().padStart(5, '0');
-            const sonoValue = `SCO-S${yearMonth}-${sonoNumber}`;
+            const sonoValue = `OLN-SO${yearMonth}-${sonoNumber}`;
             xmlString += `      <SONO>${sonoValue}</SONO>\n`;
 
             xmlString += `      <SODATE>${formattedDate}</SODATE>\n`;
