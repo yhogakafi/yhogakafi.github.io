@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     const convertBtn = document.getElementById('convertBtn');
     const fileInput = document.getElementById('fileInput');
-    const sonoInput = document.getElementById('sonoInput'); // Added this line
+    const sonoInput = document.getElementById('sonoInput');
 
     convertBtn.addEventListener('click', function() {
         // Check if SONO input is empty
