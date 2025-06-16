@@ -57,7 +57,7 @@
             padding: 10px;
             font-size: 1em;
             border: 1px solid #ccc;
-            border-radius: 5px;
+            border-radius: 10px;
             font-family: inherit;
             box-shadow: inset 0 2px 3px rgba(0,0,0,0.12);
             margin-right: 20px;
@@ -80,6 +80,19 @@
             background-color: #007aff;
             transition: background-color 0.3s;
         }
+        
+        #clearInputButton {
+            display: inline-block;
+            margin-top: 0px;
+            padding: 2px 5px;
+            font-size: 0.9em;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background-color: #252525;
+        }
+        
         button:hover {
             background-color: #f83838;
         }
@@ -155,13 +168,13 @@
             <a href="../index.html" class="h1">yhogakafi.github.io</a>
         </button>
         <h2>Input Nomor Pengiriman</h2>
-        <!-- Clear Input Button Added Below -->
-        <button id="clearInputButton" onclick="clearInput()">Clear Input</button>
     
         <div class="input-section">
             <textarea id="inputBox" rows="10" placeholder="Input di sini..."></textarea>
             <img class="input-image" src="no pengiriman.png" alt="nodo">
         </div>
+        <!-- Clear Input Button Added Below -->
+        <button id="clearInputButton" onclick="clearInput()">Clear Input</button>
         <h3>Klik Display Text dulu, baru Generate AHK atau Copy to clipboard</h3>
         <button id="displayTextButton" onclick="displayText()">Display Text</button>
         <button onclick="generateAhk()">Generate AHK</button>
