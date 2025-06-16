@@ -151,10 +151,13 @@
 <body>
 
     <div class="container">
-            <button class="neumorphic-btn">
-                <a href="../index.html" class="h1">yhogakafi.github.io</a>
-            </button>
+        <button class="neumorphic-btn">
+            <a href="../index.html" class="h1">yhogakafi.github.io</a>
+        </button>
         <h2>Input Nomor Pengiriman</h2>
+        <!-- Clear Input Button Added Below -->
+        <button id="clearInputButton" onclick="clearInput()">Clear Input</button>
+    
         <div class="input-section">
             <textarea id="inputBox" rows="10" placeholder="Input di sini..."></textarea>
             <img class="input-image" src="no pengiriman.png" alt="nodo">
@@ -163,10 +166,15 @@
         <button id="displayTextButton" onclick="displayText()">Display Text</button>
         <button onclick="generateAhk()">Generate AHK</button>
         <button onclick="copyToClipboard()">Copy to Clipboard</button>
-
+    
         <h2>Output</h2>
         <div id="outputBox"></div>
     </div>
+    
+    <script>
+
+    </script>
+    
 
     <!-- The Modal -->
     <div id="myModal" class="modal" role="dialog" aria-labelledby="modalTitle" aria-describedby="modalDescription">
@@ -178,6 +186,10 @@
     </div>
 
     <script>
+        function clearInput() {
+            document.getElementById('inputBox').value = '';
+        }
+
         function displayText() {
             var input = document.getElementById('inputBox').value;
             var lines = input.split('\n');
