@@ -8,11 +8,24 @@
 
   <div style="text-align: center;">
     <h2 style="margin-bottom: 20px;">Cari Produk Shopee Scelta</h2>
-    <input id="keyword" type="text" placeholder="Masukkan kata kunci" style="padding: 10px; width: 250px; font-size: 16px;">
+    <input 
+      id="keyword" 
+      type="text" 
+      placeholder="Masukkan kata kunci" 
+      style="padding: 10px; width: 250px; font-size: 16px;"
+    >
     <button onclick="searchShopee()" style="padding: 10px 20px; font-size: 16px; margin-left: 10px; cursor: pointer;">Cari</button>
   </div>
 
   <script>
+    // Trigger search when pressing Enter
+    document.getElementById("keyword").addEventListener("keypress", function(event) {
+      if (event.key === "Enter") {
+        event.preventDefault(); // Optional: prevent form submission if any
+        searchShopee();
+      }
+    });
+
     function searchShopee() {
       const keyword = document.getElementById('keyword').value.trim();
       if (keyword !== "") {
@@ -20,12 +33,6 @@
         window.open(url, '_blank');
       } else {
         alert("Silakan masukkan kata kunci.");
-      }
-    }
-
-    function handleKey(event) {
-      if (event.key === "Enter") {
-        searchShopee();
       }
     }
   </script>
