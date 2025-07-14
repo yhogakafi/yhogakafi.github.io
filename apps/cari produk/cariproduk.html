@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Cari Produk Shopee Scelta</title>
+</head>
+<body style="margin: 0; padding: 0; height: 100vh; display: flex; justify-content: center; align-items: center; background-color: #f9f9f9; font-family: sans-serif;">
+
+  <div style="text-align: center;">
+    <h2 style="margin-bottom: 20px;">Cari Produk Shopee Scelta</h2>
+    <input id="keyword" type="text" placeholder="Masukkan kata kunci" style="padding: 10px; width: 250px; font-size: 16px;">
+    <button onclick="searchShopee()" style="padding: 10px 20px; font-size: 16px; margin-left: 10px; cursor: pointer;">Cari</button>
+  </div>
+
+  <script>
+    function searchShopee() {
+      const keyword = document.getElementById('keyword').value.trim();
+      if (keyword !== "") {
+        const url = `https://shopee.co.id/mall/search?keyword=${encodeURIComponent(keyword)}&shop=10332092`;
+        window.open(url, '_blank');
+      } else {
+        alert("Silakan masukkan kata kunci.");
+      }
+    }
+  </script>
+
+</body>
+</html>
