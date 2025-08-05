@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Merger with Drag & Drop</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; line-height: 1.6; max-width: 900px; margin: auto; background-color: #f4f4f9; }
+        h1, h2 { border-bottom: 2px solid #ddd; padding-bottom: 10px; color: #333; }
+        .container { display: flex; gap: 30px; margin-bottom: 20px; }
+        
+        /* Drop Zone Styling */
+        .drop-zone {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            border: 3px dashed #ccc;
+            border-radius: 10px;
+            background-color: #fff;
+            color: #aaa;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.2s, border-color 0.2s;
+            min-height: 100px;
+        }
+        .drop-zone:hover { border-color: #007bff; color: #007bff; }
+        .drop-zone.drag-over {
+            border-color: #28a745;
+            background-color: #e9f7ef;
+            color: #28a745;
+        }
+        .drop-zone__prompt { font-size: 1.1em; }
+        .drop-zone__input { display: none; } /* Hide the default file input */
+        .drop-zone__thumb {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 5px;
+        }
+        
+        #mergeButton {
+            display: block; width: 100%; padding: 15px; font-size: 18px; cursor: pointer;
+            background-color: #28a745; color: white; border: none; border-radius: 5px; margin-bottom: 20px;
+        }
+        #mergeButton:disabled { background-color: #ccc; cursor: not-allowed; }
+
+        #output img { border: 2px solid #ddd; border-radius: 5px; max-width: 100%; height: auto; margin-top: 10px; }
+        #downloadLink {
+            display: none; text-align: center; padding: 15px; background-color: #007bff;
+            color: white; text-decoration: none; border-radius: 5px; margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Image Merger with Drag & Drop</h1>
+    <p>Drag & drop your images into the boxes below, or click them to select files.</p>
+
+    <div class="container">
+        <div class="drop-zone" id="baseDropZone">
+            <span class="drop-zone__prompt">Drag & Drop Base Image Here<br>or Click to Select</span>
+            <input type="file" id="baseImageInput" class="drop-zone__input" accept="image/*">
+        </div>
+
+        <div class="drop-zone" id="watermarkDropZone">
+            <span class="drop-zone__prompt">Drag & Drop Watermark Here<br>or Click to Select</span>
+            <input type="file" id="watermarkImageInput" class="drop-zone__input" accept="image/png, image/gif, image/svg+xml">
+        </div>
+    </div>
+
+    <button id="mergeButton" disabled>Merge Images</button>
+
+    <canvas id="imageCanvas" style="display: none;"></canvas>
+
+    <h2>Result:</h2>
+    <div id="output"><p>Your merged image will appear here.</p></div>
+    <a id="downloadLink" href="#" download="merged-image.png">Download Merged Image</a>
+
+    <script>
+        // Store selected files in variables
+        let baseFile = null;
+        let watermarkFile = null;
+
+        const mergeButton = document.getElementById('mergeButton');
+
+        /**
+         * Sets up a drop zone element with all necessary event listeners.
+         * @param {HTMLElement} dropZoneEl The drop zone container element.
+         * @param {HTMLInputElement} inputEl The hidden file input element.
+         * @param {(file: File) => void} onFileSelect Callback function when a file is selected.
+         */
+        function setupDropZone(dropZoneEl, inputEl, onFileSelect) {
+            // Clicking the drop zone triggers the file input
+            dropZoneEl.addEventListener('click', () => inputEl.click());
+
+            // Add visual feedback when dragging over
+            dropZoneEl.addEventListener('dragenter', e => {
+                e.preventDefault();
+                dropZoneEl.classList.add('drag-over');
+            });
+            dropZoneEl.addEventListener('dragover', e => {
+                e.preventDefault();
+                dropZoneEl.classList.add('drag-over');
+            });
+            dropZoneEl.addEventListener('dragleave', e => {
+                e.preventDefault();
+                dropZoneEl.classList.remove('drag-over');
+            });
+
+            // Handle the actual drop
+            dropZoneEl.addEventListener('drop', e => {
+                e.preventDefault();
+                dropZoneEl.classList.remove('drag-over');
+
+                if (e.dataTransfer.files.length) {
+                    // Manually set the file on the input element
+                    inputEl.files = e.dataTransfer.files;
+                    // Trigger the handler
+                    handleFileSelection(inputEl.files[0], onFileSelect);
+                }
+            });
+
+            // Handle selection via the file picker dialog
+            inputEl.addEventListener('change', () => {
+                if (inputEl.files.length) {
+                    handleFileSelection(inputEl.files[0], onFileSelect);
+                }
+            });
+        }
+        
+        /**
+         * Universal handler for file selection (from drop or click)
+         * @param {File} file The selected file object.
+         * @param {(file: File) => void} onFileSelect The callback to update state.
+         */
+        function handleFileSelection(file, onFileSelect) {
+            // Check if the file is an image
+            if (!file.type.startsWith('image/')) {
+                alert("Please select an image file.");
+                return;
+            }
+            onFileSelect(file);
+            updateButtonState();
+        }
+
+        // Setup the Base Image Drop Zone
+        setupDropZone(document.getElementById('baseDropZone'), document.getElementById('baseImageInput'), file => {
+            baseFile = file;
+            updateThumbnail(document.getElementById('baseDropZone'), file);
+        });
+
+        // Setup the Watermark Image Drop Zone
+        setupDropZone(document.getElementById('watermarkDropZone'), document.getElementById('watermarkImageInput'), file => {
+            watermarkFile = file;
+            updateThumbnail(document.getElementById('watermarkDropZone'), file);
+        });
+
+        /**
+         * Updates the thumbnail preview in the drop zone.
+         * @param {HTMLElement} dropZoneEl The drop zone element.
+         * @param {File} file The file to show as a thumbnail.
+         */
+        function updateThumbnail(dropZoneEl, file) {
+            let thumbEl = dropZoneEl.querySelector(".drop-zone__thumb");
+
+            if (!thumbEl) {
+                thumbEl = document.createElement("img");
+                thumbEl.classList.add("drop-zone__thumb");
+                dropZoneEl.innerHTML = ''; // Clear the prompt text
+                dropZoneEl.appendChild(thumbEl);
+            }
+            thumbEl.src = URL.createObjectURL(file);
+        }
+
+        // Function to enable/disable the merge button
+        function updateButtonState() {
+            mergeButton.disabled = !(baseFile && watermarkFile);
+        }
+
+        // --- MERGE LOGIC (mostly unchanged) ---
+        mergeButton.addEventListener('click', async () => {
+            if (!baseFile || !watermarkFile) return;
+
+            const outputContainer = document.getElementById('output');
+            const downloadLink = document.getElementById('downloadLink');
+            const canvas = document.getElementById('imageCanvas');
+            const ctx = canvas.getContext('2d');
+
+            const baseObjectURL = URL.createObjectURL(baseFile);
+            const watermarkObjectURL = URL.createObjectURL(watermarkFile);
+            
+            outputContainer.innerHTML = '<p>Merging images...</p>';
+            downloadLink.style.display = 'none';
+
+            try {
+                const loadImage = src => new Promise((resolve, reject) => {
+                    const img = new Image();
+                    img.onload = () => resolve(img);
+                    img.onerror = reject;
+                    img.src = src;
+                });
+
+                const [baseImage, watermarkImage] = await Promise.all([
+                    loadImage(baseObjectURL),
+                    loadImage(watermarkObjectURL)
+                ]);
+
+                canvas.width = baseImage.width;
+                canvas.height = baseImage.height;
+                ctx.drawImage(baseImage, 0, 0);
+                ctx.drawImage(watermarkImage, 0, 0, baseImage.width, baseImage.height);
+
+                const mergedImageURL = canvas.toDataURL('image/png');
+                outputContainer.innerHTML = `<img src="${mergedImageURL}" alt="Merged Image">`;
+                downloadLink.href = mergedImageURL;
+                downloadLink.style.display = 'block';
+
+            } catch (error) {
+                console.error(error);
+                outputContainer.innerHTML = `<p style="color: red;">Error merging images. Please check the console.</p>`;
+            } finally {
+                URL.revokeObjectURL(baseObjectURL);
+                URL.revokeObjectURL(watermarkObjectURL);
+            }
+        });
+    </script>
+
+</body>
+</html>
