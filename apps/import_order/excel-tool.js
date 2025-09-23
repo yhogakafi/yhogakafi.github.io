@@ -35,6 +35,7 @@ async function mergeFiles() {
             'KODE PLU',
             'Jumlah',
             'UNIT',
+            'Waktu Pembayaran Dilakukan',
             'Nomor Referensi SKU',
             'Harga Awal',
             'DISKON',
@@ -44,8 +45,7 @@ async function mergeFiles() {
             'No. Pesanan',
             'Countif dgn pdf mita',
             'Catatan dari Pembeli',
-            'Harga Setelah Diskon',
-            'Waktu Pesanan Dibuat'
+            'Harga Setelah Diskon'
         ];
 
         // Get the header row from File2
@@ -153,7 +153,7 @@ async function mergeFiles() {
         // Apply VLOOKUP formula to the new column
         sheet1.eachRow({ includeEmpty: true }, (row, rowNumber) => {
             if (rowNumber > 1) { // Skip header row
-                const vlookupFormula = `=VLOOKUP(J${rowNumber},'no pesanan dari pdf mita'!A:B,2,FALSE)`;
+                const vlookupFormula = `=VLOOKUP(K${rowNumber},'no pesanan dari pdf mita'!A:B,2,FALSE)`;
                 sheet1.getCell(rowNumber, lastColumnIndex + 1).value = { formula: vlookupFormula };
             }
         });
@@ -162,7 +162,7 @@ async function mergeFiles() {
         const kodePluColumnIndex = headersFile1.indexOf('KODE PLU') + 1; // Get the 1-based index
         sheet1.eachRow({ includeEmpty: true }, (row, rowNumber) => {
             if (rowNumber > 1) { // Skip header row
-                const vlookupFormula = `=VLOOKUP(D${rowNumber},'master barang'!A:B,2,FALSE)`;
+                const vlookupFormula = `=VLOOKUP(E${rowNumber},'master barang'!A:B,2,FALSE)`;
                 sheet1.getCell(rowNumber, kodePluColumnIndex).value = { formula: vlookupFormula };
             }
         });
@@ -171,7 +171,7 @@ async function mergeFiles() {
         const UnitColumnIndex = headersFile1.indexOf('UNIT') + 1; // Get the 1-based index
         sheet1.eachRow({ includeEmpty: true }, (row, rowNumber) => {
             if (rowNumber > 1) { // Skip header row
-                const vlookupFormula = `=VLOOKUP(D${rowNumber},'master barang'!A:D,4,FALSE)`;
+                const vlookupFormula = `=VLOOKUP(E${rowNumber},'master barang'!A:D,4,FALSE)`;
                 sheet1.getCell(rowNumber, UnitColumnIndex).value = { formula: vlookupFormula };
             }
         });        
@@ -200,18 +200,19 @@ async function mergeFiles() {
         sheet1.getRow(1).getCell('B').fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: '8ED973' } }; // Green fill
         sheet1.getRow(1).getCell('C').fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: '8ED973' } }; // Green fill
 
-        // Apply purple fill color to columns D, E, F in row 1
+        // Apply purple fill color to columns D, E, F, G in row 1
         sheet1.getRow(1).getCell('D').fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'D86DCD' } }; // Purple fill
         sheet1.getRow(1).getCell('E').fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'D86DCD' } }; // Purple fill
         sheet1.getRow(1).getCell('F').fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'D86DCD' } }; // Purple fill
+        sheet1.getRow(1).getCell('G').fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'D86DCD' } }; // Purple fill
 
-        // Apply blue fill color to columns G, H, I in row 1
-        sheet1.getRow(1).getCell('G').fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: '44B3E1' } }; // Blue fill
+        // Apply blue fill color to columns H, I, J in row 1
         sheet1.getRow(1).getCell('H').fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: '44B3E1' } }; // Blue fill
         sheet1.getRow(1).getCell('I').fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: '44B3E1' } }; // Blue fill
+        sheet1.getRow(1).getCell('J').fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: '44B3E1' } }; // Blue fill
 
-        // Apply yellow fill color to column J in row 1
-        sheet1.getRow(1).getCell('J').fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFF00' } }; // Yellow fill
+        // Apply yellow fill color to column K in row 1
+        sheet1.getRow(1).getCell('K').fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFF00' } }; // Yellow fill
 
         // Generate the output file name using file3's name
         const file3Name = file3Input.name;
