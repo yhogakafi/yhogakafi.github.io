@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>WebP → JPG Converter (Batch, Client-side)</title>
+  <title>WebP → JPG Converter</title>
   <style>
     :root{font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;}
     body{max-width:900px;margin:32px auto;padding:20px;color:#111}
@@ -26,23 +26,21 @@
   </style>
 </head>
 <body>
-  <h1>WebP → JPG Converter (Batch)</h1>
-  <p class="lead">Gambar diproses di lokal tidak dikirim ke server</p>
+  <h1>WebP → JPG Converter</h1>
+  <p class="lead">Sederhana, berjalan sepenuhnya di browser — gambar tidak dikirim ke server.</p>
 
   <div class="card">
     <div id="drop" class="drop">Tarik & jatuhkan file .webp di sini, atau <button id="chooseBtn" class="btn secondary">Pilih file</button></div>
     <input id="fileInput" type="file" accept="image/webp,image/*" multiple />
 
     <div class="controls">
-      <label>Quality: <input id="quality" type="range" min="0.1" max="1" step="0.05" value="0.9" /></label>
-      <span id="qval">0.90</span>
       <label style="margin-left:12px">Nama hasil (pattern): <input id="pattern" type="text" placeholder="{name}.jpg or {name}_converted.jpg" value="{name}.jpg" /></label>
-      <button id="convert" class="btn" style="margin-left:auto">Convert & Download ZIP</button>
+      <button id="convert" class="btn" style="margin-left:auto">Convert & Download</button>
     </div>
 
     <div id="files" class="files"></div>
     <div style="margin-top:12px"><progress id="prog" value="0" max="100" style="display:none"></progress></div>
-    <p style="margin-top:10px"><small>Catatan: Browser modern mendukung WebP. Jika file bukan WebP, converter tetap mencoba mengonversinya. Semua proses dilakukan secara lokal.</small></p>
+    <p style="margin-top:10px"><small>Catatan: Semua proses dilakukan secara lokal di perangkat Anda.</small></p>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.0/jszip.min.js"></script>
@@ -52,8 +50,6 @@
     const chooseBtn = document.getElementById('chooseBtn');
     const filesDiv = document.getElementById('files');
     const convertBtn = document.getElementById('convert');
-    const quality = document.getElementById('quality');
-    const qval = document.getElementById('qval');
     const prog = document.getElementById('prog');
     const pattern = document.getElementById('pattern');
 
@@ -83,7 +79,6 @@
     async function handleFiles(inFiles){
       const arr = Array.from(inFiles);
       for(const f of arr){
-        // create preview
         const obj = {file: f, name: f.name.replace(/\.webp$/i,'').replace(/\.[^.]+$/,'').trim(), size: f.size, type: f.type};
         obj.preview = URL.createObjectURL(f);
         fileList.push(obj);
@@ -97,15 +92,12 @@
     chooseBtn.addEventListener('click', ()=>fileInput.click());
     fileInput.addEventListener('change', (e)=>handleFiles(e.target.files));
 
-    quality.addEventListener('input', ()=>{ qval.textContent = Number(quality.value).toFixed(2); });
-
     function applyPattern(name){
       const pat = pattern.value || '{name}.jpg';
       return pat.replace(/\{name\}/gi, name);
     }
 
     async function convertOne(item){
-      // read file into ImageBitmap for reliability
       const blob = item.file;
       try{
         const bitmap = await createImageBitmap(blob);
@@ -114,11 +106,9 @@
         canvas.height = bitmap.height;
         const ctx = canvas.getContext('2d');
         ctx.drawImage(bitmap,0,0);
-        const qualityVal = Number(quality.value);
-        const jpegBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', qualityVal));
+        const jpegBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.9));
         return jpegBlob;
       }catch(err){
-        // fallback using Image
         return new Promise((resolve,reject)=>{
           const img = new Image();
           img.onload = ()=>{
@@ -127,7 +117,7 @@
             canvas.height = img.naturalHeight;
             const ctx = canvas.getContext('2d');
             ctx.drawImage(img,0,0);
-            canvas.toBlob(b=>resolve(b),'image/jpeg',Number(quality.value));
+            canvas.toBlob(b=>resolve(b),'image/jpeg',0.9);
           };
           img.onerror = (e)=>reject(e);
           img.src = URL.createObjectURL(blob);
@@ -140,34 +130,46 @@
       convertBtn.disabled = true; convertBtn.textContent='Converting...';
       prog.style.display='block'; prog.value = 0; prog.max = fileList.length;
 
-      const zip = new JSZip();
-      let i=0;
-      for(const item of fileList){
+      if(fileList.length === 1){
         try{
+          const item = fileList[0];
           const outBlob = await convertOne(item);
           const outName = applyPattern(item.name);
-          zip.file(outName, outBlob);
+          const url = URL.createObjectURL(outBlob);
+          const a = document.createElement('a');
+          a.href = url; a.download = outName;
+          document.body.appendChild(a); a.click(); a.remove();
+          URL.revokeObjectURL(url);
         }catch(err){
-          console.error('Konversi gagal untuk', item.name, err);
+          console.error('Konversi gagal', err);
         }
-        i++; prog.value = i;
+      } else {
+        const zip = new JSZip();
+        let i=0;
+        for(const item of fileList){
+          try{
+            const outBlob = await convertOne(item);
+            const outName = applyPattern(item.name);
+            zip.file(outName, outBlob);
+          }catch(err){
+            console.error('Konversi gagal untuk', item.name, err);
+          }
+          i++; prog.value = i;
+        }
+
+        const content = await zip.generateAsync({type:'blob'});
+        const url = URL.createObjectURL(content);
+        const a = document.createElement('a');
+        a.href = url; a.download = 'webp-to-jpg.zip';
+        document.body.appendChild(a); a.click(); a.remove();
+        URL.revokeObjectURL(url);
       }
 
       prog.style.display='none';
       prog.value = 0;
-
-      convertBtn.textContent = 'Mempersiapkan ZIP...';
-      const content = await zip.generateAsync({type:'blob'});
-      const url = URL.createObjectURL(content);
-      const a = document.createElement('a');
-      a.href = url; a.download = 'webp-to-jpg.zip';
-      document.body.appendChild(a); a.click(); a.remove();
-      URL.revokeObjectURL(url);
-
-      convertBtn.disabled = false; convertBtn.textContent='Convert & Download ZIP';
+      convertBtn.disabled = false; convertBtn.textContent='Convert & Download';
     });
 
-    // initial state
     renderFiles();
   </script>
 </body>
