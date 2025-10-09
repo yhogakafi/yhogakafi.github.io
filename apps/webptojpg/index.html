@@ -3,13 +3,15 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>WebP → JPG Converter</title>
+  <title>WebP → JPG Converter + Image Merger</title>
   <style>
     :root{font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;}
-    body{max-width:900px;margin:32px auto;padding:20px;color:#111}
+    body{max-width:1200px;margin:24px auto;padding:18px;color:#111}
     h1{font-size:20px;margin-bottom:6px}
     p.lead{color:#444;margin-top:0}
-    .card{border:1px solid #e6e6e6;border-radius:12px;padding:18px;margin-top:12px;box-shadow:0 6px 18px rgba(20,20,20,0.03)}
+    .grid{display:flex;gap:18px;align-items:flex-start}
+    @media (max-width:900px){ .grid{flex-direction:column} }
+    .card{flex:1;border:1px solid #e6e6e6;border-radius:12px;padding:18px;margin-top:12px;box-shadow:0 6px 18px rgba(20,20,20,0.03)}
     .drop{border:2px dashed #cfcfcf;border-radius:10px;padding:26px;text-align:center;cursor:pointer}
     .drop.dragover{border-color:#6aa0ff;background:#f6fbff}
     input[type=file]{display:none}
@@ -20,29 +22,76 @@
     .controls{display:flex;gap:12px;align-items:center;margin-top:12px}
     .btn{background:#2563eb;color:#fff;padding:8px 12px;border-radius:8px;border:none;cursor:pointer}
     .btn.secondary{background:#6b7280}
+    .btn.ghost{background:transparent;color:#2563eb;border:1px solid #cfe0ff}
     progress{width:100%}
     label{font-size:13px;color:#333}
     small{color:#666}
+    .preview{display:flex;flex-direction:column;gap:8px;align-items:center}
+    .preview img{max-width:100%;max-height:240px;object-fit:contain;border-radius:8px;border:1px solid #ececec}
+    .merge-controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:12px}
+    .hint{font-size:13px;color:#666;margin-top:8px}
   </style>
 </head>
 <body>
-  <h1>WebP/Avif → JPG Converter</h1>
+  <h1>WebP/Avif → JPG Converter + Image Merger</h1>
 
-  <div class="card">
-    <div id="drop" class="drop">Drag & drop file .webp di sini, atau <button id="chooseBtn" class="btn secondary">Pilih file</button></div>
-    <input id="fileInput" type="file" accept="image/webp,image/*" multiple />
+  <div class="grid">
+    <!-- LEFT: Converter -->
+    <div class="card" id="converterCard">
+      <h2 style="margin:0 0 8px 0">WebP/Avif → JPG Converter</h2>
+      <p class="lead" style="margin:0 0 12px 0">Drag & drop .webp or select images. Convert single file or multiple files (zip).</p>
 
-    <div class="controls">
-      <button id="convert" class="btn" style="margin-left:auto">Convert & Download</button>
+      <div id="drop" class="drop">Drag & drop file .webp di sini, atau <button id="chooseBtn" class="btn secondary">Pilih file</button></div>
+      <input id="fileInput" type="file" accept="image/webp,image/*" multiple />
+
+      <div class="controls">
+        <button id="convert" class="btn" style="margin-left:auto">Convert & Download</button>
+      </div>
+
+      <div id="files" class="files"></div>
+      <div style="margin-top:12px"><progress id="prog" value="0" max="100" style="display:none"></progress></div>
+      <p style="margin-top:10px"><small>Catatan: Semua proses dilakukan secara lokal di perangkat Anda.</small></p>
     </div>
 
-    <div id="files" class="files"></div>
-    <div style="margin-top:12px"><progress id="prog" value="0" max="100" style="display:none"></progress></div>
-    <p style="margin-top:10px"><small>Catatan: Semua proses dilakukan secara lokal di perangkat Anda.</small></p>
+    <!-- RIGHT: Merger -->
+    <div class="card" id="mergerCard">
+      <h2 style="margin:0 0 8px 0">Image Merger (Top + Bottom)</h2>
+      <p class="lead" style="margin:0 0 12px 0">Pilih dua gambar — satu untuk bagian atas, satu untuk bagian bawah — lalu merge menjadi satu JPG.</p>
+
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <!-- Top image -->
+        <div style="flex:1;min-width:220px;">
+          <label><strong>Top image</strong></label>
+          <div id="dropTop" class="drop" style="padding:18px">Drag & drop top image, or <button id="chooseTop" class="btn secondary">Choose</button></div>
+          <input id="topInput" type="file" accept="image/*" />
+          <div id="previewTop" class="preview"><small class="hint">No image selected</small></div>
+        </div>
+
+        <!-- Bottom image -->
+        <div style="flex:1;min-width:220px;">
+          <label><strong>Bottom image</strong></label>
+          <div id="dropBottom" class="drop" style="padding:18px">Drag & drop bottom image, or <button id="chooseBottom" class="btn secondary">Choose</button></div>
+          <input id="bottomInput" type="file" accept="image/*" />
+          <div id="previewBottom" class="preview"><small class="hint">No image selected</small></div>
+        </div>
+      </div>
+
+      <div class="merge-controls">
+        <button id="mergeBtn" class="btn" disabled>Merge & Download</button>
+        <button id="swapBtn" class="btn ghost">Swap Top/Bottom</button>
+        <label style="display:flex;align-items:center;gap:8px"><small>Background</small>
+          <input id="bgColor" type="color" value="#ffffff" />
+        </label>
+      </div>
+
+      <div style="margin-top:10px"><small class="hint">Merged image width = max(widths). Images centered horizontally. PNGs with transparency get background color.</small></div>
+    </div>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.0/jszip.min.js"></script>
+
   <script>
+    /* ====== Existing converter code (unchanged behaviour) ====== */
     const drop = document.getElementById('drop');
     const fileInput = document.getElementById('fileInput');
     const chooseBtn = document.getElementById('chooseBtn');
@@ -66,7 +115,7 @@
         const meta = document.createElement('div'); meta.className='meta';
         meta.innerHTML = `<div><strong>${f.name}</strong> <small>(${humanSize(f.size)})</small></div><div><small>${f.type || ''}</small></div>`;
         const rem = document.createElement('button'); rem.className='btn secondary'; rem.textContent='Hapus';
-        rem.onclick = ()=>{ fileList.splice(i,1); renderFiles(); }
+        rem.onclick = ()=>{ URL.revokeObjectURL(f.preview); fileList.splice(i,1); renderFiles(); }
         el.appendChild(img); el.appendChild(meta); el.appendChild(rem);
         filesDiv.appendChild(el);
       });
@@ -163,6 +212,147 @@
     });
 
     renderFiles();
+
+    /* ====== Image Merger (slider removed) ====== */
+    const topInput = document.getElementById('topInput');
+    const bottomInput = document.getElementById('bottomInput');
+    const chooseTop = document.getElementById('chooseTop');
+    const chooseBottom = document.getElementById('chooseBottom');
+    const dropTop = document.getElementById('dropTop');
+    const dropBottom = document.getElementById('dropBottom');
+    const previewTop = document.getElementById('previewTop');
+    const previewBottom = document.getElementById('previewBottom');
+    const mergeBtn = document.getElementById('mergeBtn');
+    const swapBtn = document.getElementById('swapBtn');
+    const bgColor = document.getElementById('bgColor');
+
+    let topFile = null;
+    let bottomFile = null;
+    let topURL = null;
+    let bottomURL = null;
+
+    function clearPreview(container){ container.innerHTML = ''; }
+    function setPreview(container, url, name){
+      container.innerHTML = '';
+      const img = document.createElement('img');
+      img.src = url; img.alt = name || '';
+      container.appendChild(img);
+      const caption = document.createElement('div');
+      caption.style.fontSize = '13px';
+      caption.style.color = '#444';
+      caption.style.marginTop = '6px';
+      caption.textContent = name || '';
+      container.appendChild(caption);
+    }
+
+    function updateMergeState(){ mergeBtn.disabled = !(topFile && bottomFile); }
+
+    async function handleTopFile(f){
+      if(!f) return;
+      if(topURL) URL.revokeObjectURL(topURL);
+      topFile = f;
+      topURL = URL.createObjectURL(f);
+      setPreview(previewTop, topURL, f.name);
+      updateMergeState();
+    }
+    async function handleBottomFile(f){
+      if(!f) return;
+      if(bottomURL) URL.revokeObjectURL(bottomURL);
+      bottomFile = f;
+      bottomURL = URL.createObjectURL(f);
+      setPreview(previewBottom, bottomURL, f.name);
+      updateMergeState();
+    }
+
+    chooseTop.addEventListener('click', ()=> topInput.click());
+    chooseBottom.addEventListener('click', ()=> bottomInput.click());
+    topInput.addEventListener('change', (e)=> handleTopFile(e.target.files[0]));
+    bottomInput.addEventListener('change', (e)=> handleBottomFile(e.target.files[0]));
+
+    dropTop.addEventListener('dragover', (e)=>{ e.preventDefault(); dropTop.classList.add('dragover'); });
+    dropTop.addEventListener('dragleave', ()=> dropTop.classList.remove('dragover'));
+    dropTop.addEventListener('drop', (e)=>{ e.preventDefault(); dropTop.classList.remove('dragover'); const f = e.dataTransfer.files[0]; if(f) handleTopFile(f); });
+
+    dropBottom.addEventListener('dragover', (e)=>{ e.preventDefault(); dropBottom.classList.add('dragover'); });
+    dropBottom.addEventListener('dragleave', ()=> dropBottom.classList.remove('dragover'));
+    dropBottom.addEventListener('drop', (e)=>{ e.preventDefault(); dropBottom.classList.remove('dragover'); const f = e.dataTransfer.files[0]; if(f) handleBottomFile(f); });
+
+    swapBtn.addEventListener('click', ()=>{
+      const tFile = topFile, bFile = bottomFile, tURL = topURL, bURL = bottomURL;
+      topFile = bFile; bottomFile = tFile; topURL = bURL; bottomURL = tURL;
+
+      if(topURL) setPreview(previewTop, topURL, topFile ? topFile.name : '');
+      else { clearPreview(previewTop); previewTop.innerHTML = '<small class="hint">No image selected</small>'; }
+      if(bottomURL) setPreview(previewBottom, bottomURL, bottomFile ? bottomFile.name : '');
+      else { clearPreview(previewBottom); previewBottom.innerHTML = '<small class="hint">No image selected</small>'; }
+
+      updateMergeState();
+    });
+
+    async function loadImageBitmap(file){
+      try{ return await createImageBitmap(file); }
+      catch(e){
+        return await new Promise((resolve, reject)=>{
+          const img = new Image();
+          img.onload = ()=> resolve(img);
+          img.onerror = reject;
+          img.src = URL.createObjectURL(file);
+        });
+      }
+    }
+
+    mergeBtn.addEventListener('click', async ()=>{
+      if(!topFile || !bottomFile) return;
+      mergeBtn.disabled = true; mergeBtn.textContent = 'Merging...';
+
+      try{
+        const topBitmap = await loadImageBitmap(topFile);
+        const bottomBitmap = await loadImageBitmap(bottomFile);
+
+        const topW = topBitmap.width || topBitmap.naturalWidth;
+        const topH = topBitmap.height || topBitmap.naturalHeight;
+        const bottomW = bottomBitmap.width || bottomBitmap.naturalWidth;
+        const bottomH = bottomBitmap.height || bottomBitmap.naturalHeight;
+
+        const canvas = document.createElement('canvas');
+        const outWidth = Math.max(topW, bottomW);
+        const outHeight = topH + bottomH;
+        canvas.width = outWidth;
+        canvas.height = outHeight;
+        const ctx = canvas.getContext('2d');
+
+        ctx.fillStyle = bgColor.value || '#ffffff';
+        ctx.fillRect(0,0,outWidth,outHeight);
+
+        const topX = Math.round((outWidth - topW) / 2);
+        ctx.drawImage(topBitmap, topX, 0, topW, topH);
+
+        const bottomX = Math.round((outWidth - bottomW) / 2);
+        ctx.drawImage(bottomBitmap, bottomX, topH, bottomW, bottomH);
+
+        // fixed quality (slider removed)
+        const quality = 0.9;
+        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', quality));
+        const outName = `merged_${Date.now()}.jpg`;
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = outName;
+        document.body.appendChild(a); a.click(); a.remove();
+        URL.revokeObjectURL(url);
+
+      }catch(err){
+        console.error('Merge failed', err);
+        alert('Gagal menggabungkan gambar. Periksa file dan coba lagi.');
+      }finally{
+        mergeBtn.disabled = false; mergeBtn.textContent = 'Merge & Download';
+      }
+    });
+
+    window.addEventListener('beforeunload', ()=>{
+      if(topURL) URL.revokeObjectURL(topURL);
+      if(bottomURL) URL.revokeObjectURL(bottomURL);
+      fileList.forEach(f => { try{ URL.revokeObjectURL(f.preview); }catch(e){} });
+    });
   </script>
 </body>
 </html>
